@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:vendor/authentication/controllers/login_controller.dart';
 import 'package:vendor/authentication/views/profile_edit.dart';
@@ -10,14 +13,31 @@ class UserDetailScreen extends StatefulWidget {
   State<UserDetailScreen> createState() => _UserDetailScreenState();
 }
 
-class _UserDetailScreenState extends State<UserDetailScreen> {
-  late String? imageUrl=widget.userData['data']['photo'].toString();
+ class _UserDetailScreenState extends State<UserDetailScreen> {
+   late  String imageUrl=widget.userData['data']['photo'];
+
+   late ImageProvider<Object>? imageProvider;
+
   @override
   void initState() {
     super.initState();
     imageUrl = widget.userData['data']['photo'];
+    _loadImage();
+
+    // print(imageUrl);
   }
-  @override
+
+   Future<void> _loadImage() async {
+     var imageBytes = base64Decode(imageUrl);
+     String fileName = 'image.jpg';
+     File file = await File(fileName).writeAsBytes(imageBytes);
+     setState(() {
+       imageProvider = FileImage(file);
+     });
+   }
+
+
+   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -51,12 +71,14 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
                 // backgroundImage: NetworkImage(
                 //   'https://i.pravatar.cc/150?img=1',
                 // ),
-                backgroundImage: imageUrl != null ? NetworkImage(imageUrl!) : NetworkImage('https://media.istockphoto.com/vectors/default-image-icon-vector-missing-picture-page-for-website-design-or-vector-id1357365823?b=1&k=20&m=1357365823&s=170667a&w=0&h=y6ufWZhEt3vYWetga7F33Unbfta2oQXCZLUsEa67ydM='),
+
+                backgroundImage: NetworkImage('https://media.istockphoto.com/vectors/default-image-icon-vector-missing-picture-page-for-website-design-or-vector-id1357365823?b=1&k=20&m=1357365823&s=170667a&w=0&h=y6ufWZhEt3vYWetga7F33Unbfta2oQXCZLUsEa67ydM='),
+                // backgroundImage: imageUrl != null ? Image.network(imageUrl): Image.network('https://media.istockphoto.com/vectors/default-image-icon-vector-missing-picture-page-for-website-design-or-vector-id1357365823?b=1&k=20&m=1357365823&s=170667a&w=0&h=y6ufWZhEt3vYWetga7F33Unbfta2oQXCZLUsEa67ydM='),
               ),
             ),
             const SizedBox(height: 20),
              Text(
-              '${widget.userData['data']['username']}',
+              '${widget.userData['data']['name']}',
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
@@ -84,7 +106,7 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
                       ),
                     ),
                      Text(
-                      '${widget.userData['data']['name']}',
+                      '${widget.userData['data']['username']}',
                       style: TextStyle(
                         fontSize: 20,
                         color: Colors.white,

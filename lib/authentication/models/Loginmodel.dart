@@ -11,7 +11,7 @@ class LoginModel {
     try {
       debugPrint("Api Connected");
       final response = await Dio().post(
-        'http://192.168.2.111:9999/api/vendor/login',
+        'http://192.168.2.106:9999/api/vendor/login',
         data: {
           'email': email,
           'password': password,

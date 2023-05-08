@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -25,24 +26,36 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
   TextEditingController _phoneController = TextEditingController();
   TextEditingController _addressController = TextEditingController();
   TextEditingController _shortinfoController = TextEditingController();
+  TextEditingController _vedorjoinController = TextEditingController();
   bool _isImageSelected=false;
   File? image;
   File? imagelocal;
-  String? imageapi;
+   String? imageapi;
+  File? _imagefile;
   final ProfileController _controller = ProfileController();
   Future<void> _pickGalleryImage() async {
     try{
-      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-      if (image == null) return;
-      final imageTemporay=File(image.path );
+      final pickedimage= await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (pickedimage == null) return;
+      // print(pickedimage.path);
+      File imagefile=File(pickedimage.path);
+      // print(imageFile);
+      Uint8List imagebytes = await imagefile.readAsBytes();
+      String base64string = base64.encode(imagebytes);
+
+      Uint8List decodedbytes = base64.decode(base64string);
+      print(decodedbytes);
+      final imageTemporay=File(pickedimage.path );
 
 
-      final imagePermant=await _saveImage(image.path);
+      final imagePermant=await _saveImage(pickedimage.path);
       // final readbytes = await (imagePermant ?? imageTemporay).readAsBytes();
       final readbytes= await imageTemporay.readAsBytes();
       final base64image=await unit8ToBase64(readbytes as Uint8List, "image/jpeg");
 
       setState(() {
+        _imagefile=File(pickedimage.path);
+
         imageapi=base64image;
         this.imagelocal=imageTemporay;
         // this.imagelocal=imagePermant;
@@ -60,7 +73,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
       final filepath = File('${directory.path}/$fileName.png');
 
       await filepath.writeAsBytes(await image!.readAsBytes());
-      print('${directory.path}/$fileName.png');
+      // print('${directory.path}/$fileName.png');
       return File(imagepath).copy('${directory.path}/$fileName.png');
     }
     return null;
@@ -123,14 +136,28 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
       final username = _usernameController.text.trim();
       final phonenumber = _phoneController.text.trim();
       final email = _emailController.text.trim();
+      print(email);
       final shortinfo=_shortinfoController.text.trim();
       final address=_addressController.text.trim();
-      final image=imageapi.toString();
-
-      _controller.authenticate(context,name,phonenumber,email,shortinfo,address,image,username)
-          .then((value) {
-
-      });
+      final vendor_join=_vedorjoinController.text.trim();
+      // final image=_imagefile;
+      final image=imageapi;
+      _controller
+          .authenticate(
+          context,
+          name,
+          username,
+          email,
+          phonenumber,
+          address,
+          shortinfo,
+          vendor_join,
+         image.toString())
+          .then((value) {});
+      // _controller.authenticate(context,name,username,email,phonenumber,address,shortinfo,vendor_join,image as File)
+      //     .then((value) {
+      //
+      // });
     }
   }
 
@@ -143,14 +170,17 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
     _phoneController.text = widget.userData['data']['phone'] ?? '';
     _addressController.text = widget.userData['data']['address'] ?? '';
     _shortinfoController.text = widget.userData['data']['vendor_short_info'] ?? '';
+    _vedorjoinController.text = widget.userData['data']['vendor_join'] ?? '';
   }
   @override
   void dispose() {
     _nameController.dispose();
+    _usernameController.dispose();
     _emailController.dispose();
     _phoneController.dispose();
     _addressController.dispose();
     _shortinfoController.dispose();
+    _vedorjoinController.dispose();
     super.dispose();
   }
 
@@ -180,13 +210,13 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
         },
       child: CircleAvatar(
       radius: 50,
-      backgroundImage:
-      imagelocal!=null ? Image.file(imagelocal!,width:160,height:160,fit:BoxFit.cover).image :
-      NetworkImage('${widget.userData['data']['photo']}') as ImageProvider<Object> ,
-        // backgroundImage: _isImageSelected
-        //
-        //     ? FileImage(File(imageFile!.path))
-        //     : NetworkImage('${widget.userData['data']['photo']}') as ImageProvider<Object>,
+      // backgroundImage:
+      // imagelocal!=null ? Image.file(imagelocal!,width:160,height:160,fit:BoxFit.cover).image :
+      // NetworkImage('${widget.userData['data']['photo']}') as ImageProvider<Object> ,
+        backgroundImage: _isImageSelected
+
+            ? FileImage(File(_imagefile!.path))
+            : NetworkImage('${widget.userData['data']['photo']}') as ImageProvider<Object>,
       child: Icon(
       Icons.camera_alt,
       size: 30,
@@ -315,6 +345,31 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
             return null;
           },
         ),
+
+        SizedBox(height: 30,),
+        Text(
+          'Vendor_join',
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: Theme.of(context).primaryColor,
+          ),
+        ),
+
+        const SizedBox(height: 10),
+        TextFormField(
+          controller: _vedorjoinController,
+          decoration: InputDecoration(
+            hintText: 'Vendor_join',
+            border: OutlineInputBorder(),
+          ),
+          validator: (value) {
+            if (value!.isEmpty) {
+              return 'Please enter Short  Description';
+            }
+            return null;
+          },
+        ),
         SizedBox(height: 30,),
         Text(
           'Address',
@@ -343,6 +398,9 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
       Center(
       child: ElevatedButton(
       onPressed: () {
+        setState(() {
+          print("Hello");
+        });
 
       if (_formKey.currentState!.validate()) {
         _onUpdateDataPressed(context);

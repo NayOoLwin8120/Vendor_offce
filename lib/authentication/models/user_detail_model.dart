@@ -16,13 +16,20 @@ class UserModel {
       }
 
       final response = await Dio().get(
-        'http://192.168.2.111:9999/api/vendor/detail/2',
+        'http://192.168.2.106:9999/api/vendor/detail/2',
         options: Options(headers: {'Authorization': 'Bearer $token'}),
       );
 
       if (response.statusCode == 200) {
         final responseData = response.data;
-        return responseData;
+        if (responseData['image'] != null) {
+          final imageUrl = responseData['image']['url'];
+          return {...responseData, 'imageUrl': imageUrl};
+        }else{
+          return responseData;
+        }
+
+
       } else {
         return null; // Error retrieving user data
       }
@@ -36,7 +43,7 @@ class UserModel {
   Future<String?> authenticate(String email, String password) async {
     try {
       final response = await Dio().post(
-        'http://192.168.2.111:9999/api/vendor/login',
+        'http://192.168.2.106:9999/api/vendor/login',
         data: {
           'email': email,
           'password': password,

@@ -9,7 +9,7 @@ class RegiesterModel {
     try {
 
       final response = await Dio().post(
-        'http://192.168.2.111:9999/api/vendor/register',
+        'http://192.168.2.106:9999/api/vendor/register',
         data: {
           'name':name,
           'username':username,

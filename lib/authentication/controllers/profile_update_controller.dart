@@ -1,21 +1,96 @@
 
+import 'dart:io';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:vendor/authentication/models/profile_update_model.dart';
 import 'package:vendor/pages/secondpage.dart';
 
 
 
-class ProfileController{
+class ProfileController {
   final ProfileModel _model = ProfileModel();
 
 
-  Future<void> authenticate(
-      BuildContext context,String username, String email, String name,String phone,String address,String vendor_short_info,String photo ) async {
+  Future<void> authenticate(BuildContext context, String name, String username, String email,
+     String phone, String address, String vendor_short_info,
+      String vendor_join, String image) async {
     // final result = await _model.authenticate(email,name,phone,address,vendor_short_info,photo);
     // final String? errorMessage = result != null ? result.toString() : null;
+//     try {
+//       final String? errorMessage = await _model.authenticate(email,name,phone,address,vendor_short_info,image);
+//       // Convert image file to MultipartFile
+//       // String fileName = image.path
+//       //     .split('/')
+//       //     .last;
+//       // MultipartFile multipartFile = await MultipartFile.fromFile(
+//       //     image.path, filename: fileName);
+//       //
+//       // final String? errorMessage = await _model.authenticate(
+//       //   name,
+//       //   email,
+//       //   username,
+//       //   phone,
+//       //   address,
+//       //   vendor_short_info,
+//       //   vendor_join,
+//       //   ,
+//       // );
+//       if (errorMessage != null) {
+//         showDialog(
+//           context: context,
+//           builder: (context) =>
+//               AlertDialog(
+//                 title: Text('Error'),
+//                 content: Text("please Try Again !"),
+//                 actions: [
+//                   TextButton(
+//                     onPressed: () => Navigator.pop(context),
+//                     child: Text('OK'),
+//                   ),
+//                 ],
+//               ),
+//         );
+//       } else {
+//         print("No Error");
+//         showDialog(
+//           context: context,
+//           builder: (BuildContext context) {
+//             return AlertDialog(
+//               shape: const RoundedRectangleBorder(
+//                   borderRadius: BorderRadius.all(Radius.circular(40))),
+//               title: Text('Profile Updated Successful'),
+//             );
+//           },
+//         );
+//         Future.delayed(Duration(seconds: 3), () {
+//           Navigator.of(context).pushAndRemoveUntil(
+//               MaterialPageRoute(builder: (context) => Second()), (
+//               route) => false);
+//         });
+//       }
+//     } catch (error) {
+//       print(error);
+//       showDialog(
+//         context: context,
+//         builder: (context) => AlertDialog(
+//           title: Text('Error'),
+//           content: Text("please Try Again !"),
+//           actions: [
+//             TextButton(
+//               onPressed: () => Navigator.pop(context),
+//               child: Text('OK'),
+//             ),
+//           ],
+//         ),
+//       );
+//     }
+//   }
+// }
 
-    final String? errorMessage = await _model.authenticate(email,name,username,phone,address,vendor_short_info,photo) ;
+    final String? errorMessage = await _model.authenticate(name,username,email,phone,address,vendor_short_info,vendor_join,image) ;
     if (errorMessage != null) {
+      print(errorMessage);
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -30,6 +105,7 @@ class ProfileController{
         ),
       );
     } else {
+      print("No Error");
       showDialog(
         context: context,
         builder: (BuildContext context) {
