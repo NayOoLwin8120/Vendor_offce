@@ -9,6 +9,7 @@ import 'package:vendor/authentication/models/user_detail_model.dart';
 import 'package:vendor/authentication/views/notifications.dart';
 import 'package:vendor/controllers/Dashboard%20Page%20Controller/dashboard_controller.dart';
 import 'package:vendor/pages/Brand%20Page/brand.dart';
+import 'package:vendor/pages/Category%20Page/Sub%20Category%20Page/sub_category.dart';
 import 'package:vendor/pages/Category%20Page/category.dart';
 import 'package:vendor/pages/Dashboard%20Page/dashboard.dart';
 import 'package:vendor/pages/Product%20Page/product.dart';
@@ -37,6 +38,7 @@ class _SecondState extends State<Second> {
   static const List<Widget> _widgetOptions = <Widget>[
     Dashboard(),
   Category_page(),
+    Sub_Category(),
     Product(),
     Brand(),
   ];
@@ -50,7 +52,9 @@ class _SecondState extends State<Second> {
         _title = 'Home Page';
       } else if (index == 1) {
         _title = ' Category Page';
-      } else if (index == 2) {
+      }else if(index == 2){
+        _title='Sub_Category Page';
+      } else if (index == 3) {
         _title = 'Products Page';
       }else{
         _title="Brand Page";
@@ -651,20 +655,28 @@ class _SecondState extends State<Second> {
         backgroundColor: Colors.black,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            backgroundColor:Colors.deepOrangeAccent,
+            backgroundColor:Colors.blue,
             icon: Icon(Icons.home),
             label: 'Home Page',
           ),
           BottomNavigationBarItem(
+            backgroundColor:Colors.blue,
             icon: Icon(Icons.category_outlined),
             label: 'Category Page',
           ),
           BottomNavigationBarItem(
+            backgroundColor:Colors.blue,
+            icon: Icon(Icons.business_sharp),
+            label: 'Sub_Category Page',
+          ),
+          BottomNavigationBarItem(
+            backgroundColor:Colors.blue,
             icon: ImageIcon(AssetImage("assets/images/new-product.png"),color: Colors.red,
               size:50,),
             label: 'Products  Page',
           ),
           BottomNavigationBarItem(
+            backgroundColor:Colors.blue,
             icon: Icon(Icons.shopping_bag),
             label: 'Brands Page',
           ),

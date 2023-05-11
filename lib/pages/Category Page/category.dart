@@ -132,8 +132,8 @@ class _Category_pageState extends State<Category_page> {
                                     Container(
                                       width:300,
                                       height:130,
-                                      // child:Image.network(brand.brand_image.toString()),
-                                      child:Image.network("https://upload.wikimedia.org/wikipedia/commons/9/99/LEI0440_Leica_IIIf_chrom_-_Sn._580566_1951-52-M39_Blitzsynchron_front_view-6531_hf-.jpg"),
+                                      // child:Image.network(brand.brand_image.toString())
+                                      child:Image.network("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1YSHPe4EaX_oXIXpM5PiPIRaVMOl_pTGd4Q&usqp=CAU"),
                                     ),
                                     Container(
                                       width: 300,

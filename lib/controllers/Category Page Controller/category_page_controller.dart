@@ -17,6 +17,19 @@ class CategoryApiController {
       throw Exception('Failed to load data');
     }
   }
+  // Future<CategoryApiResponse> getCategories() async {
+  //   final response = await _dio.get('$_baseUrl/$_endpoint');
+  //
+  //   if (response.statusCode == 200) {
+  //     final List<dynamic> dataList = response.data['data'];
+  //     print(dataList);
+  //     final List<CategoryApiResponse> categories = dataList.map((json) => CategoryApiResponse.fromJson(json)).toList();
+  //     return categories;
+  //   } else {
+  //     throw Exception('Failed to load data');
+  //   }
+  // }
+
 
   Future<void> editCategory({
     required int id,

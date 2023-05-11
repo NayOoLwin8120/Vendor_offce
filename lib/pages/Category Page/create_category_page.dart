@@ -13,6 +13,7 @@ class CreateCategoryPage extends StatefulWidget {
 
 
 class _CreateCategoryPageState extends State<CreateCategoryPage> {
+
   final _formKey = GlobalKey<FormState>();
 
   final _CategoryNameController = TextEditingController();
@@ -29,7 +30,7 @@ class _CreateCategoryPageState extends State<CreateCategoryPage> {
 
       try {
         final response = await Dio().post(
-          'http://192.168.2.111:9999/api/vendor/category',
+          'http://192.168.100.23:9999/api/vendor/category',
           data: {
             'category_name': _CategoryNameController.text,
             'category_image':_CategoryImageController.text,

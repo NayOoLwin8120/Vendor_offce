@@ -42,9 +42,9 @@ class Data {
   factory Data.fromJson(Map<String, dynamic> json) {
     return Data(
       id: json['id'],
-      category_name: json['brand_name'],
-      category_slug: json['brand_slug'],
-      category_image: json['brand_image'],
+      category_name: json['category_name'],
+      category_slug: json['category_slug'],
+      category_image: json['category_image'],
       status: json['status'],
       created_at: json['created_at'],
       updated_at: json['updated_at'],
