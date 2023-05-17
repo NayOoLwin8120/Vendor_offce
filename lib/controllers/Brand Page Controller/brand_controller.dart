@@ -4,10 +4,17 @@ import 'package:vendor/Model/Brand%20Page%20Model%20/brand_model.dart';
 
 
 class BrandApiController {
-   final _baseUrl = 'http://192.168.2.106:9999/api/vendor';
+
+  final ipaddress="https://ziizii.mickhae.com/";
+  final ipaddress2='http://192.168.100.23:9999/';
+  // final _baseUrl = 'https://ziizii.mickhae.com/api/vendor';
+  final _baseUrl = 'http://192.168.100.23:9999/api/vendor';
+
+
   final Dio _dio = Dio();
 
   Future<BrandApiResponse> getData() async {
+
     final response = await _dio.get('$_baseUrl/brand');
 
     if (response.statusCode == 200) {
@@ -17,6 +24,15 @@ class BrandApiController {
     }
   }
 
+   List<Data> filterData(String query, List<Data> data) {
+     final lowercaseQuery = query.toLowerCase();
+
+     return data.where((item) {
+       final name = item.brand_name?.toLowerCase() ?? '';
+       return name.contains(lowercaseQuery);
+     }).toList();
+   }
+
   Future<void> editBrand({
     required int id,
     required String name,
@@ -24,6 +40,7 @@ class BrandApiController {
 
   }) async {
     try {
+
       final response = await _dio.put(
         '$_baseUrl/brand/$id',
         data: {
@@ -50,6 +67,7 @@ class BrandApiController {
   }
   Future<void> deleteBrand(int? id) async {
     try {
+
       await _dio.delete('$_baseUrl/brand/$id');
       getData();
 

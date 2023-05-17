@@ -7,6 +7,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class UserModel {
   final _storage = FlutterSecureStorage();
+  final _baseurl="https://ziizii.mickhae.com/api/vendor";
 
   Future<Map<String, dynamic>?> getUserData() async {
     try {
@@ -16,7 +17,7 @@ class UserModel {
       }
 
       final response = await Dio().get(
-        'http://192.168.2.106:9999/api/vendor/detail/2',
+        '$_baseurl/detail/2',
         options: Options(headers: {'Authorization': 'Bearer $token'}),
       );
 
@@ -43,7 +44,7 @@ class UserModel {
   Future<String?> authenticate(String email, String password) async {
     try {
       final response = await Dio().post(
-        'http://192.168.2.106:9999/api/vendor/login',
+        '$_baseurl/login',
         data: {
           'email': email,
           'password': password,

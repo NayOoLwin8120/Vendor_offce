@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:lottie/lottie.dart';
 import 'package:vendor/Model/Dashboard%20Page%20Model/dashboard_model.dart';
 import 'package:vendor/authentication/models/user_detail_model.dart';
@@ -14,6 +15,13 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   final ApiController _dash=ApiController();
   final userModel = UserModel();
+  Data? selectedData;
+
+
+  String? vendorStatus = ApiController().getVendorStatus().toString();
+
+
+
   Color Status(String? userStatus) {
     if (userStatus == "pending") {
       return Colors.red;
@@ -49,15 +57,33 @@ class _DashboardState extends State<Dashboard> {
                     final apiResponse = snapshot.data!;
 
                     return SingleChildScrollView(
+
                       scrollDirection: Axis.vertical,
                       child: Column(
                         children: [
                           SizedBox(height:20),
-                          Container(child: Row(
+
+                          Container(child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text("Your Vendor Account is ",style: TextStyle(fontSize: 18),),
-                              Text("Active ",style: TextStyle(fontSize: 20,color: Colors.green),),
+                              // Text("${vendorStatus}",style: TextStyle(fontSize: 20,color: Colors.green),),
+                              FutureBuilder<String?>(
+                                future:_dash.getVendorStatus(),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState == ConnectionState.waiting) {
+                                    return CircularProgressIndicator();
+                                  } else if (snapshot.hasError) {
+                                    return Text('Error fetching vendor status');
+                                  } else {
+                                    String? vendorStatus = snapshot.data;
+                                    return Text(
+                                      vendorStatus == 'active' ? '$vendorStatus' :' `$vendorStatus` .Please Contact Admin !',
+                                      style: TextStyle(fontSize: 20, color:vendorStatus =='active' ? Colors.green : Colors.red),
+                                    );
+                                  }
+                                },
+                              ),
                             ],
                           )),
                           SizedBox(height:20),
@@ -235,35 +261,49 @@ class _DashboardState extends State<Dashboard> {
                                             scrollDirection: Axis.horizontal,
                                             child: DataTable(
                                               columns: [
-                                                DataColumn(label: Text('ID')),
+                                                DataColumn(label: Text('Sl')),
                                                 DataColumn(label: Text('Order Date')),
                                                 DataColumn(label: Text('Invoice No.')),
-                                                DataColumn(label: Text('Amount')),
-                                                DataColumn(label: Text('Payment Method')),
-                                                DataColumn(label: Text('Status')),
+                                                // DataColumn(label: Text('Amount')),
+                                                // DataColumn(label: Text('Payment Method')),
+                                                // DataColumn(label: Text('Status')),
                                               ],
-                                              // rows: [
-                                              //   DataRow(cells: [
-                                              //     DataCell(Text('${data.id}')),
-                                              //     DataCell(Text(snapshot.data!.order_date ?? '')),
-                                              //     DataCell(Text(snapshot.data!.invoice_no ?? '')),
-                                              //     DataCell(Text(snapshot.data!.amount.toString())),
-                                              //     DataCell(Text(snapshot.data!.payment_method ?? '')),
-                                              //     DataCell(Text(snapshot.data!.status ?? '')),
-                                              //   ]),
-                                              // ],
-                                              rows:apiResponse.data
-                                                  .map((data) => DataRow(cells: [
-                                                DataCell(Text('${data.id}')),
-                                                DataCell(Text('${data.orderDate}')),
-                                                DataCell(Text('${data.invoiceNo}')),
-                                                DataCell(Text('${data.amount}')),
-                                                DataCell(Text('${data.paymentMethod}')),
-                                                DataCell(Text('${data.status}',style: TextStyle(color:Status(data.status)),)),
-                                              ]))
-                                                  .toList(),
+
+
+                                              // rows:apiResponse.data
+                                              //     .map((data) => DataRow(cells: [
+                                              //   DataCell(Text('${data.id}')),
+                                              //   DataCell(Text('${data.orderDate}')),
+                                              //   DataCell(Text('${data.invoiceNo}')),
+                                              //   DataCell(Text('${data.amount}')),
+                                              //   DataCell(Text('${data.paymentMethod}')),
+                                              //   DataCell(Text('${data.status}',style: TextStyle(color:Status(data.status)),)),
+                                              // ]))
+                                              //     .toList(),
+                                              rows: apiResponse.data.map((data) {
+                                                int sl = apiResponse.data.indexOf(data) + 1; // Calculate the Sl value
+                                                return DataRow(cells: [
+                                                  DataCell(Text('$sl')),
+                                                  DataCell(Text('${data.orderDate}')),
+                                                  DataCell(Text('${data.invoiceNo}')),
+
+                                                ],
+                                                    onSelectChanged: (selected) {
+                                                  setState(() {
+                                                    if (selected!) {
+                                                      selectedData = data; // Store the selected data
+                                                    }
+                                                  });
+                                                },
+                                                );
+                                              }).toList(),
                                             ),
+
+
+
                                           );
+
+
 
                                         } else if (snapshot.hasError) {
                                           print(snapshot.hasError);
@@ -274,6 +314,7 @@ class _DashboardState extends State<Dashboard> {
                                       },
                                     ),
                                   ),
+
                                 ],
                               )
                           )

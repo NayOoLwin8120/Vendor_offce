@@ -15,6 +15,7 @@ class LoginController {
   Future<void> authenticate(
       BuildContext context, String email, String password) async {
     final String? errorMessage = await _model.authenticate(email, password);
+
     if (errorMessage != null) {
       showDialog(
         context: context,
@@ -55,8 +56,16 @@ class LoginController {
   }
   Future<String?> isLoggedIn() async {
     final token=await _storage.read(key: 'token');
+    final vendor_id=await _storage.read(key: 'id');
+    final runtime_type=vendor_id.runtimeType;
+    final status=await _storage.read(key: 'vendor_status');
 
-    print(token);
+    debugPrint("Your vendor id  is $vendor_id");
+    debugPrint("Your vendor status  is $status");
+    debugPrint("Your vendor status  is ${status.runtimeType}");
+    debugPrint("--------- Your vendor id runtime type is $runtime_type ---------");
+
+    debugPrint("--------- Your auth token  is `$token` ---------");
     // tomorrow night change
     return await _storage.read(key: 'token');
  // return "abc";
@@ -76,6 +85,8 @@ class LoginController {
           ),
           TextButton(
             onPressed: () async{
+              await _storage.delete(key: 'id');
+              await _storage.delete(key: 'vendor_status');
               await _storage.delete(key: 'token');
               await _storage.delete(key: 'username');
               await _storage.delete(key: 'password');

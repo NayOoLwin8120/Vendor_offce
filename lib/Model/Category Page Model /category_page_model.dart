@@ -5,11 +5,13 @@ class CategoryApiResponse {
   String message;
   int total;
   List<Data> data;
-  CategoryApiResponse({required this.total,required this.message,required this.data,});
+
+  CategoryApiResponse({required this.total,required this.message,required this.data});
 
   factory CategoryApiResponse.fromJson(Map<String, dynamic> json) {
     final dataList = json['data'] as List<dynamic>;
     final data = dataList.map((item) => Data.fromJson(item)).toList();
+
     print(data);
 
     return CategoryApiResponse(

@@ -4,9 +4,14 @@ import 'package:vendor/Model/Category%20Page%20Model%20/category_page_model.dart
 
 
 class CategoryApiController {
-  final _baseUrl = 'http://192.168.2.106:9999/api/vendor';
+  // final _baseUrl = 'https://ziizii.mickhae.com/api/vendor';
+  final _baseUrl = 'http://192.168.100.23:9999/api/vendor';
+  final ipaddress="https://ziizii.mickhae.com/";
+  final ipaddress2='http://192.168.100.23:9999/';
   final _endpoint='category';
   final Dio _dio = Dio();
+
+
 
   Future<CategoryApiResponse> getData() async {
     final response = await _dio.get('$_baseUrl/$_endpoint');
@@ -17,18 +22,14 @@ class CategoryApiController {
       throw Exception('Failed to load data');
     }
   }
-  // Future<CategoryApiResponse> getCategories() async {
-  //   final response = await _dio.get('$_baseUrl/$_endpoint');
-  //
-  //   if (response.statusCode == 200) {
-  //     final List<dynamic> dataList = response.data['data'];
-  //     print(dataList);
-  //     final List<CategoryApiResponse> categories = dataList.map((json) => CategoryApiResponse.fromJson(json)).toList();
-  //     return categories;
-  //   } else {
-  //     throw Exception('Failed to load data');
-  //   }
-  // }
+  List<Data> filterData(String query, List<Data> data) {
+    final lowercaseQuery = query.toLowerCase();
+
+    return data.where((item) {
+      final name = item.category_name?.toLowerCase() ?? '';
+      return name.contains(lowercaseQuery);
+    }).toList();
+  }
 
 
   Future<void> editCategory({

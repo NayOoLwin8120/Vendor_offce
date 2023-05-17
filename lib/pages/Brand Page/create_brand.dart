@@ -25,7 +25,7 @@ class _CreateBrandPageState extends State<CreateBrandPage> {
 
       try {
         final response = await Dio().post(
-          'http://192.168.2.106:9999/api/vendor/brand',
+          'https://ziizii.mickhae.com/api/vendor/brand',
           data: {
             'brand_name': _brandNameController.text,
             'brand_image': _brandImageController.text,

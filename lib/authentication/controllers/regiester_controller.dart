@@ -13,6 +13,7 @@ class RegiesterController {
   Future<void> authenticate(
       BuildContext context, String name,String username,String email, String password) async {
     final String? errorMessage = await _model.authenticate(name,username,email, password);
+    print(errorMessage);
     if (errorMessage != null) {
       showDialog(
         context: context,

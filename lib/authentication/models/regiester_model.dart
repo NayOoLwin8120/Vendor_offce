@@ -4,12 +4,13 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class RegiesterModel {
   final _storage = FlutterSecureStorage();
+  final _baseurl="https://ziizii.mickhae.com/api/vendor";
 
   Future<String?> authenticate(String name,String username,String email, String password) async {
     try {
 
       final response = await Dio().post(
-        'http://192.168.2.106:9999/api/vendor/register',
+        '$_baseurl/register',
         data: {
           'name':name,
           'username':username,
@@ -21,8 +22,10 @@ class RegiesterModel {
       if (response.statusCode == 201) {
         final responseData = response.data;
         final token = responseData['token'];
+        final vendorid=responseData['id'].toString();
 
         await _storage.write(key: 'token', value: token);
+        await _storage.write(key: 'id', value: vendorid);
         await _storage.write(key: 'username', value: email);
         await _storage.write(key: 'password', value: password);
 

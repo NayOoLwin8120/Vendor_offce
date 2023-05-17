@@ -1,11 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:vendor/Model/Category%20Page%20Model%20/Sub_Category%20Page%20Model/sub_category_page_model.dart';
 
-import 'package:vendor/Model/Category%20Page%20Model%20/category_page_model.dart';
+// import 'package:vendor/Model/Category%20Page%20Model%20/category_page_model.dart';
 
 
 class SubCategoryApiController {
-  final _baseUrl = 'http://192.168.2.106:9999/api/vendor';
+  // final _baseUrl = 'https://ziizii.mickhae.com/api/vendor';
+  final _baseUrl = 'http://192.168.100.23:9999/api/vendor';
   final _endpoint='subcategory';
   final Dio _dio = Dio();
 
@@ -18,6 +19,7 @@ class SubCategoryApiController {
       throw Exception('Failed to load data');
     }
   }
+
   Future<void> updateSubCategory(int subcategoryId, String subcategoryName, int categoryId) async {
     try {
       final response = await _dio.put(
@@ -34,37 +36,14 @@ class SubCategoryApiController {
   }
 
 
-  // Future<void> editSubCategory({
-  //   required int id,
-  //   required String name,
-  //
-  //
-  // }) async {
-  //   try {
-  //     final response = await _dio.put(
-  //       '$_baseUrl/$_endpoint/$id?_method=put',
-  //       data: {
-  //         'category_name': name,
-  //         'category_id':id,
-  //
-  //       },
-  //     );
-  //     print(response.statusCode);
-  //
-  //     if (response.statusCode == 200) {
-  //       // Success
-  //       print('Brand updated successfully!');
-  //
-  //     } else {
-  //       // Error
-  //
-  //       print('Error updating brand');
-  //     }
-  //   } catch (error) {
-  //     // Handle error
-  //     print('Error updating brand: ${error.toString()}');
-  //   }
-  // }
+  List<Data> filterData(String query, List<Data> data) {
+    final lowercaseQuery = query.toLowerCase();
+
+    return data.where((item) {
+      final name = item.subcategory_name?.toLowerCase() ?? '';
+      return name.contains(lowercaseQuery);
+    }).toList();
+  }
 
   Future<void> editSubCategory({
     required int id,

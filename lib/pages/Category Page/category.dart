@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:vendor/Model/Category%20Page%20Model%20/category_page_model.dart';
 
 import 'package:lottie/lottie.dart';
+import 'package:vendor/pages/Category%20Page/category_search_page.dart';
 import 'package:vendor/pages/Category%20Page/create_category_page.dart';
 import 'package:vendor/pages/Category%20Page/edit_category_page.dart';
 
@@ -18,6 +19,8 @@ class Category_page extends StatefulWidget{
 
 class _Category_pageState extends State<Category_page> {
   final CategoryApiController _category= CategoryApiController();
+
+
 
   void _confirmDelete(BuildContext context, int id) {
     showDialog(
@@ -55,9 +58,11 @@ class _Category_pageState extends State<Category_page> {
       },
     );
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           Navigator.push(
@@ -76,7 +81,7 @@ class _Category_pageState extends State<Category_page> {
         children: [
           SizedBox(height: 60),
           Text("Category Lists",style: TextStyle(fontSize:22 ),),
-          SizedBox(height: 20),
+          SizedBox(height:20),
           Expanded(
             child: SingleChildScrollView(
               scrollDirection: Axis.vertical,
@@ -88,6 +93,7 @@ class _Category_pageState extends State<Category_page> {
                   runSpacing: 20.0,
                   children: [
                     FutureBuilder<CategoryApiResponse>(
+                      // future: _category.getData(),
                       future: _category.getData(),
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {

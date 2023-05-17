@@ -4,6 +4,7 @@ import 'package:vendor/authentication/controllers/login_controller.dart';
 import 'package:vendor/authentication/models/user_detail_model.dart';
 import 'package:vendor/authentication/views/login_page.dart';
 import 'package:vendor/pages/secondpage.dart';
+import 'package:vendor/pages/userdetail.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -46,13 +47,14 @@ class _MyHomePageState extends State<MyHomePage> {
             FutureBuilder(
               future: LoginController().isLoggedIn(),
               builder: (context, snapshot) {
-                print("Data is not parsing");
+                print("Data is reload");
                 if (snapshot.hasData) {
                   final isLoggedIn = snapshot.data;
-                  print("Data not fountd");
+                  print("Data get");
 
                   if (isLoggedIn !=null) {
                     return Second();
+                    // return SecondPg();
                   } else {
 
                     return LoginScreen2();

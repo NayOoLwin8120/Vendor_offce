@@ -14,12 +14,11 @@ class _SubcategoryFormState extends State<SubcategoryForm> {
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
   String _errorMessage = '';
-
   TextEditingController _SubCategoryNameController = TextEditingController();
-
-
   int? selectedCategoryId;
    String  categoryIdString='';
+
+
   Future<void> _submitForm() async {
     print(selectedCategoryId);
     print(selectedCategoryId.runtimeType);
@@ -36,7 +35,7 @@ class _SubcategoryFormState extends State<SubcategoryForm> {
         print(_SubCategoryNameController.text);
         if(categoryIdString != null){
           final response = await Dio().post(
-            'http://192.168.2.106:9999/api/vendor/subcategory',
+            'https://ziizii.mickhae.com/api/vendor/subcategory',
             data: {
               'category_id':categoryIdString ,
               'subcategory_name':_SubCategoryNameController.text,

@@ -15,7 +15,8 @@ class Sub_Category extends StatefulWidget {
 
 class _Sub_CategoryState extends State<Sub_Category> {
   final  SubCategoryApiController _subcategory=SubCategoryApiController();
-  void _confirmDelete(BuildContext context, int id) {
+  List<SubCategoryApiResponse> subcategories =[];
+  void _confirmDelete(BuildContext context, int? id) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -51,6 +52,7 @@ class _Sub_CategoryState extends State<Sub_Category> {
       },
     );
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -233,42 +235,13 @@ class _Sub_CategoryState extends State<Sub_Category> {
 
                                       ),
 
-                                      // Container(
-                                      //   width: 300,
-                                      //   height: 100,
-                                      //   child: Column(
-                                      //     children: [
-                                      //       Center(child: Text(subcategory..toString(),style: TextStyle(fontSize: 20),)),
-                                      //       Row(
-                                      //         mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                      //         children: [
-                                      //           TextButton(
-                                      //
-                                      //             onPressed:(){
-                                      //               Navigator.push(
-                                      //                 context,
-                                      //                 MaterialPageRoute(builder: (context) => EditCategoryPage (id: category.id!, name: category.category_name!, imageUrl:category.category_image!)),
-                                      //               );
-                                      //             } ,
-                                      //             child: const Text('Edit',style: TextStyle(fontSize: 20,color: Colors.green),),
-                                      //           ),
-                                      //           TextButton(
-                                      //
-                                      //             onPressed:(){
-                                      //               _confirmDelete(context, category.id!);
-                                      //             },
-                                      //             child: const Text('Delete',style: TextStyle(fontSize: 20,color: Colors.red)),
-                                      //           ),
-                                      //         ],
-                                      //       ),
-                                      //     ],
-                                      //   ),
-                                      // ),
+
                                     ],
                                   ),
                                 );
                               },
                             );
+
                           }
                           else if (snapshot.hasError) {
                             print(snapshot.error);

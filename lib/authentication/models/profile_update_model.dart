@@ -4,12 +4,14 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 
 class ProfileModel {
+  final _baseurl="https://ziizii.mickhae.com/api/vendor";
+
   Future<String?> authenticate(String name,String username,String email,String phone,String address,String vendor_short_info,String vendor_join,String image ) async {
     try {
       debugPrint("Api Connected");
 
       final response = await Dio().post(
-        'http://192.168.2.106:9999/api/vendor/profile/update/2',
+        '$_baseurl/profile/update/2',
         data: {
           'name':name,
           'username':username,
