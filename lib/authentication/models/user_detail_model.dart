@@ -7,7 +7,8 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class UserModel {
   final _storage = FlutterSecureStorage();
-  final _baseurl="https://ziizii.mickhae.com/api/vendor";
+  // final _baseurl="https://ziizii.mickhae.com/api/vendor";
+  final _baseurl="http://192.168.2.108:9999/api/vendor";
 
   Future<Map<String, dynamic>?> getUserData() async {
     try {

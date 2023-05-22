@@ -23,12 +23,12 @@ class Data {
   String? name;
   String? product_slug;
   String? product_code;
-  String? product_qty;
+  int? product_qty;
   String? product_tags;
   String? product_size;
   String? product_color;
-  String? selling_price;
-  String? discount_price;
+  int? selling_price;
+  int? discount_price;
   String? short_descp;
   String? long_descp;
   String? product_thambnail;

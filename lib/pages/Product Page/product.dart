@@ -3,6 +3,7 @@ import 'package:lottie/lottie.dart';
 import 'package:vendor/Model/Product%20Page%20Model/product_page_model.dart';
 import 'package:vendor/controllers/Product%20Page%20Controller/product_page%20_controller.dart';
 import 'package:vendor/pages/Product%20Page/create_product_page.dart';
+import 'package:vendor/pages/Product%20Page/edit_product_page.dart';
 import 'package:vendor/pages/Product%20Page/image.dart';
 
 class Product extends StatefulWidget {
@@ -35,10 +36,10 @@ class _ProductState extends State<Product> {
                 _product.deleteProduct(id);
                 Navigator.of(context).pop();
                 ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                content: Text('Category deleted successfully!'),
-                duration: Duration(seconds: 2),
-                ),
+                  SnackBar(
+                    content: Text('Category deleted successfully!'),
+                    duration: Duration(seconds: 2),
+                  ),
                 );
                 setState(() {
 
@@ -120,6 +121,7 @@ class _ProductState extends State<Product> {
 
                             itemBuilder: (context, index) {
                               final product= apiResponse.data[index];
+
                               return Card(
                                 color: Colors.blue.withOpacity(0.6),
                                 elevation: 1,
@@ -137,10 +139,10 @@ class _ProductState extends State<Product> {
                                       height:120,
                                       // child:Image.network(brand.brand_image.toString())
                                       child:Image(
-                                        width:300,
+                                          width:300,
                                           height:100,
                                           image: NetworkImage("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1YSHPe4EaX_oXIXpM5PiPIRaVMOl_pTGd4Q&usqp=CAU")),
-                                          // image: NetworkImage("$imageip/${product.product_thambnail}")),
+                                      // image: NetworkImage("$imageip/${product.product_thambnail}")),
                                     ),
                                     Container(
                                       width: 300,
@@ -148,15 +150,15 @@ class _ProductState extends State<Product> {
                                       child: Column(
                                         children: [
                                           Container(
-                                            width:double.infinity,
-                                            height:40,
-                                             child:Row(
-                                               mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                               children: [
-                                                 Text("Product name:"),
-                                                 Text(product.name.toString())
-                                               ],
-                                             )
+                                              width:double.infinity,
+                                              height:40,
+                                              child:Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                children: [
+                                                  Text("Product name:"),
+                                                  Text(product.name.toString())
+                                                ],
+                                              )
                                           ),
                                           Container(
                                               width:double.infinity,
@@ -199,7 +201,7 @@ class _ProductState extends State<Product> {
                                                 children: [
                                                   Text("Product Status"),
 
-                                                   Text(product.status == 1 ? "Active " : "InActive"),
+                                                  Text(product.status == 1 ? "Active " : "InActive"),
                                                 ],
                                               )
                                           ),
@@ -214,10 +216,31 @@ class _ProductState extends State<Product> {
                                                     backgroundColor: Colors.green.withOpacity(0.6)),
 
                                                 onPressed:(){
-                                                  // Navigator.push(
-                                                  //   context,
-                                                  //   MaterialPageRoute(builder: (context) => EditSubCategoryPage(id: subcategory.id!, categoryname: subcategory.category!, subcategoryname: subcategory.subcategory_name!)),
-                                                  // );
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(builder: (context) => EditProductPage(
+                                                        product_id:product.id!,
+                                                        brand_name:product.brand!,
+                                                        category_name:product.category!,
+                                                        subcategory_name: product.subcategory!,
+                                                        product_name:product.name!,
+                                                        product_code:product.product_code!,
+                                                        discount_price: product.discount_price!,
+                                                        product_qty:product.product_qty!,
+                                                        selling_price: product.selling_price!,
+                                                        product_color:product.product_color!,
+                                                        long_descp: product.long_descp!,
+                                                        short_descp: product.short_descp!,
+                                                        special_deals: product.special_deals!,
+                                                        special_offer: product.special_offer!,
+                                                        hot_deals:product.hot_deals!,
+                                                        product_size: product.product_size!,
+                                                        status: product.status!,
+                                                        featured:product.featured!,
+                                                        product_tags: product.product_tags!,
+                                                      // product_thambnail: product.product_thambnail!,
+                                                    )),
+                                                  );
                                                   print("Edit Page");
                                                 } ,
                                                 child: const Text('Edit',style: TextStyle(fontSize: 16,color: Colors.white),),

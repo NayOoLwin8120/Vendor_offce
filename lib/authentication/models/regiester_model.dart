@@ -4,7 +4,8 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class RegiesterModel {
   final _storage = FlutterSecureStorage();
-  final _baseurl="https://ziizii.mickhae.com/api/vendor";
+  // final _baseurl="https://ziizii.mickhae.com/api/vendor";
+  final _baseurl="http://192.168.2.108:9999/api/vendor";
 
   Future<String?> authenticate(String name,String username,String email, String password) async {
     try {

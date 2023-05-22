@@ -6,7 +6,8 @@ import 'package:vendor/Model/Dashboard%20Page%20Model/dashboard_model.dart';
 import 'package:dio/dio.dart';
 
 class ApiController {
-  static final _baseUrl = 'https://ziizii.mickhae.com/api/vendor';
+  // static final _baseUrl = 'https://ziizii.mickhae.com/api/vendor';
+  static final _baseUrl = 'http://192.168.2.108:9999/api/vendor';
   final Dio _dio = Dio();
   final storage=FlutterSecureStorage();
 

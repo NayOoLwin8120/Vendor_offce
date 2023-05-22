@@ -264,37 +264,47 @@ class _DashboardState extends State<Dashboard> {
                                                 DataColumn(label: Text('Sl')),
                                                 DataColumn(label: Text('Order Date')),
                                                 DataColumn(label: Text('Invoice No.')),
+                                                DataColumn(label: Text("Action")),
                                                 // DataColumn(label: Text('Amount')),
                                                 // DataColumn(label: Text('Payment Method')),
                                                 // DataColumn(label: Text('Status')),
                                               ],
 
 
-                                              // rows:apiResponse.data
-                                              //     .map((data) => DataRow(cells: [
-                                              //   DataCell(Text('${data.id}')),
-                                              //   DataCell(Text('${data.orderDate}')),
-                                              //   DataCell(Text('${data.invoiceNo}')),
-                                              //   DataCell(Text('${data.amount}')),
-                                              //   DataCell(Text('${data.paymentMethod}')),
-                                              //   DataCell(Text('${data.status}',style: TextStyle(color:Status(data.status)),)),
-                                              // ]))
-                                              //     .toList(),
+
                                               rows: apiResponse.data.map((data) {
                                                 int sl = apiResponse.data.indexOf(data) + 1; // Calculate the Sl value
                                                 return DataRow(cells: [
                                                   DataCell(Text('$sl')),
                                                   DataCell(Text('${data.orderDate}')),
                                                   DataCell(Text('${data.invoiceNo}')),
+                                                  DataCell(IconButton(
+                                                    icon:Icon(Icons.remove_red_eye_outlined),
+                                                    onPressed: (){
+                                                      showModalBottomSheet(
+                                                        context: context,
+                                                        builder: (context) => OrderDetailsDialog(orderData: data!),
+                                                      );
+                                                    },
+                                                  )),
 
                                                 ],
-                                                    onSelectChanged: (selected) {
-                                                  setState(() {
-                                                    if (selected!) {
-                                                      selectedData = data; // Store the selected data
-                                                    }
-                                                  });
-                                                },
+
+
+
+                                                //     onSelectChanged: (selected) {
+                                                //   setState(() {
+                                                //     if (selected!) {
+                                                //       selectedData = data; // Store the selected data
+                                                //     }
+                                                //   });
+                                                // },
+                                                //   onLongPress:(){
+                                                //     showModalBottomSheet(
+                                                //       context: context,
+                                                //       builder: (context) => OrderDetailsDialog(orderData: selectedData!),
+                                                //     );
+                                                //   },
                                                 );
                                               }).toList(),
                                             ),
@@ -345,6 +355,47 @@ class _DashboardState extends State<Dashboard> {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class OrderDetailsDialog extends StatelessWidget {
+  final Data orderData;
+
+  const OrderDetailsDialog({Key? key, required this.orderData}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        height:400,
+      padding: EdgeInsets.all(16),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            'Order Details',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 30),
+          Text('Order ID  :       ${orderData.id}',style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400)),
+          SizedBox(height: 20),
+          Text('            Order Date      :     ${orderData.orderDate}',style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400)),
+          SizedBox(height: 20),
+          Text('            Invoice No.     :     ${orderData.invoiceNo}',style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400)),
+          SizedBox(height: 20),
+          Text('  Amount      :       ${orderData.amount}',style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400)),
+          SizedBox(height: 20),
+          Text('  Payment     :      ${orderData.paymentMethod}',style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400)),
+          SizedBox(height: 20),
+          Text('  Order Status    :      ${orderData.status}',style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400,color:orderData.status== 'pending' ? Colors.red : Colors.green)),
+          SizedBox(height: 20),
+          ElevatedButton(
+            child: const Text('Close Details'),
+            onPressed: () => Navigator.pop(context),
+          ),
+          // Add more order details here
+        ],
       ),
     );
   }

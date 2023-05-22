@@ -30,7 +30,8 @@ class _CreateCategoryPageState extends State<CreateCategoryPage> {
 
       try {
         final response = await Dio().post(
-          'https://ziizii.mickhae.com/api/vendor/category',
+          // 'https://ziizii.mickhae.com/api/vendor/category',
+          'http://192.168.2.108:9999/vendor/category',
           data: {
             'category_name': _CategoryNameController.text,
             'category_image':_CategoryImageController.text,

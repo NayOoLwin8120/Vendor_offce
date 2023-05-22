@@ -32,52 +32,74 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
   File? imagelocal;
    String? imageapi;
   File? _imagefile;
+  File? _singleImage;
   final ProfileController _controller = ProfileController();
-  Future<void> _pickGalleryImage() async {
-    try{
-      final pickedimage= await ImagePicker().pickImage(source: ImageSource.gallery);
-      if (pickedimage == null) return;
-      // print(pickedimage.path);
-      File imagefile=File(pickedimage.path);
-      // print(imageFile);
-      Uint8List imagebytes = await imagefile.readAsBytes();
-      String base64string = base64.encode(imagebytes);
+  final picker = ImagePicker();
+  String singleImageBase64='';
+  // Future<void> _pickGalleryImage() async {
+  //   try{
+  //     final pickedimage= await ImagePicker().pickImage(source: ImageSource.gallery);
+  //     if (pickedimage == null) return;
+  //     // print(pickedimage.path);
+  //     File imagefile=File(pickedimage.path);
+  //     // print(imageFile);
+  //     Uint8List imagebytes = await imagefile.readAsBytes();
+  //     String base64string = base64.encode(imagebytes);
+  //
+  //     Uint8List decodedbytes = base64.decode(base64string);
+  //     print(decodedbytes);
+  //     final imageTemporay=File(pickedimage.path );
+  //
+  //
+  //     final imagePermant=await _saveImage(pickedimage.path);
+  //     // final readbytes = await (imagePermant ?? imageTemporay).readAsBytes();
+  //     final readbytes= await imageTemporay.readAsBytes();
+  //     final base64image=await unit8ToBase64(readbytes as Uint8List, "image/jpeg");
+  //
+  //     setState(() {
+  //       _imagefile=File(pickedimage.path);
+  //
+  //       imageapi=base64image;
+  //       this.imagelocal=imageTemporay;
+  //       // this.imagelocal=imagePermant;
+  //     });
+  //   }on PlatformException catch (e){
+  //     print("Failed to picked image: $e");
+  //   }
+  //
+  // }
 
-      Uint8List decodedbytes = base64.decode(base64string);
-      print(decodedbytes);
-      final imageTemporay=File(pickedimage.path );
+  Future<void> _getSingleImage() async {
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
-
-      final imagePermant=await _saveImage(pickedimage.path);
-      // final readbytes = await (imagePermant ?? imageTemporay).readAsBytes();
-      final readbytes= await imageTemporay.readAsBytes();
-      final base64image=await unit8ToBase64(readbytes as Uint8List, "image/jpeg");
-
+    if (pickedFile != null) {
       setState(() {
-        _imagefile=File(pickedimage.path);
-
-        imageapi=base64image;
-        this.imagelocal=imageTemporay;
-        // this.imagelocal=imagePermant;
+        _singleImage = File(pickedFile.path);
       });
-    }on PlatformException catch (e){
-      print("Failed to picked image: $e");
+
     }
+    if (_singleImage != null) {
+      // Convert single image file to Base64
+      List<int> singleImageBytes = await _singleImage!.readAsBytes();
+      String singleImageBase = 'data:image/png;base64' + base64Encode(singleImageBytes);
+      singleImageBase64=singleImageBase;
+      print(singleImageBase64);
 
-  }
-  Future<File?> _saveImage(String imagepath) async {
-    if (image != null) {
-      final directory = await getApplicationDocumentsDirectory() ;
-
-      final fileName = DateTime.now().toIso8601String();
-      final filepath = File('${directory.path}/$fileName.png');
-
-      await filepath.writeAsBytes(await image!.readAsBytes());
-      // print('${directory.path}/$fileName.png');
-      return File(imagepath).copy('${directory.path}/$fileName.png');
     }
-    return null;
   }
+  // Future<File?> _saveImage(String imagepath) async {
+  //   if (image != null) {
+  //     final directory = await getApplicationDocumentsDirectory() ;
+  //
+  //     final fileName = DateTime.now().toIso8601String();
+  //     final filepath = File('${directory.path}/$fileName.png');
+  //
+  //     await filepath.writeAsBytes(await image!.readAsBytes());
+  //     // print('${directory.path}/$fileName.png');
+  //     return File(imagepath).copy('${directory.path}/$fileName.png');
+  //   }
+  //   return null;
+  // }
   Future<void> _pickCameraImage() async {
     try{
       final image = await ImagePicker().pickImage(source: ImageSource.camera);
@@ -107,7 +129,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                 GestureDetector(
                   child: const Text('Gallery'),
                   onTap: () async {
-                    _pickGalleryImage();
+                    _getSingleImage();
 
                     Navigator.of(context).pop();
                   },
@@ -152,7 +174,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
           address,
           shortinfo,
           vendor_join,
-         image.toString())
+         singleImageBase64)
           .then((value) {});
       // _controller.authenticate(context,name,username,email,phonenumber,address,shortinfo,vendor_join,image as File)
       //     .then((value) {

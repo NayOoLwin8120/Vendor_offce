@@ -5,7 +5,7 @@ import 'package:vendor/Model/Category%20Page%20Model%20/category_page_model.dart
 
 class CategoryApiController {
   // final _baseUrl = 'https://ziizii.mickhae.com/api/vendor';
-  final _baseUrl = 'http://192.168.100.23:9999/api/vendor';
+  final _baseUrl = 'http://192.168.2.108:9999/api/vendor';
   final ipaddress="https://ziizii.mickhae.com/";
   final ipaddress2='http://192.168.100.23:9999/';
   final _endpoint='category';

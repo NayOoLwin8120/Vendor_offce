@@ -5,7 +5,8 @@ import 'package:vendor/Model/Product%20Page%20Model/product_page_model.dart';
 
 
 class ProductApiController {
-  final _baseUrl = 'https://ziizii.mickhae.com/api/vendor';
+  // final _baseUrl = 'https://ziizii.mickhae.com/api/vendor';
+  final _baseUrl = 'http://192.168.2.108:9999/api/vendor';
   final _endpoint='products';
   final Dio _dio = Dio();
   final storage=FlutterSecureStorage();
@@ -47,4 +48,5 @@ class ProductApiController {
       print('Error deleting brand: ${e.message}');
     }
   }
+
 }

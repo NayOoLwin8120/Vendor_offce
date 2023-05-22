@@ -5,23 +5,69 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lottie/lottie.dart';
+import 'package:vendor/Model/Brand%20Page%20Model%20/brand_model.dart';
+import 'package:vendor/Model/Category%20Page%20Model%20/Sub_Category%20Page%20Model/sub_category_page_model.dart';
 import 'package:vendor/Model/Category%20Page%20Model%20/category_page_model.dart';
 import 'package:vendor/controllers/Brand%20Page%20Controller/brand_controller.dart';
 import 'package:vendor/controllers/Category%20Page%20Controller/Sub_Category%20Page%20Controller/sub_category_page_controller.dart';
+import 'package:vendor/controllers/Category%20Page%20Controller/category_page_controller.dart';
 import 'package:vendor/controllers/Product%20Page%20Controller/product_page%20_controller.dart';
 
-import '../../Model/Brand Page Model /brand_model.dart';
-import '../../Model/Category Page Model /Sub_Category Page Model/sub_category_page_model.dart';
-import '../../controllers/Category Page Controller/category_page_controller.dart';
+class EditProductPage extends StatefulWidget {
+   int? product_id;
+  String? brand_name;
+  String? category_name;
+  String? subcategory_name;
+  String? product_name;
+  String? product_code;
+  int? product_qty;
+  String? product_tags;
+   String? product_size;
+   String? product_color;
+   int? selling_price;
+   int? discount_price;
+   String? short_descp;
+   String? long_descp;
+   int? hot_deals;
+   int? featured;
+   int? special_offer;
+ int? special_deals;
+ int? status;
 
-class CreateProduct extends StatefulWidget {
-  const CreateProduct({Key? key}) : super(key: key);
+  // String product_thambnail;
+
+
+
+  EditProductPage({
+    Key? key,
+    int? this.product_id,
+
+    String? this.brand_name,
+    String? this.category_name,
+    String? this.subcategory_name,
+    String? this.product_name,
+    String? this.product_code,
+    int? this.discount_price,
+   int? this.product_qty,
+    int? this.selling_price,
+    String? this.product_color,
+    String? this.long_descp,
+    String? this.short_descp,
+   int? this.special_deals,
+    int? this.special_offer,
+    // required this.product_thambnail,
+    int? this.hot_deals,
+    String? this.product_size,
+    int? this.status,
+   int? this.featured,
+    String? this.product_tags,
+  }) : super(key: key);
 
   @override
-  State<CreateProduct> createState() => _CreateProductState();
+  State<EditProductPage> createState() => _EditProductPageState();
 }
 
-class _CreateProductState extends State<CreateProduct> {
+class _EditProductPageState extends State<EditProductPage> {
   final _brandApiController =BrandApiController();
   final _categoryApiController = CategoryApiController();
   final _subcategoryApiController=SubCategoryApiController();
@@ -31,24 +77,24 @@ class _CreateProductState extends State<CreateProduct> {
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
   String _errorMessage = '';
-  TextEditingController _SubCategoryNameController = TextEditingController();
   TextEditingController _ProductNameController = TextEditingController();
   TextEditingController _ProductCodeController = TextEditingController();
   TextEditingController _ProductTagsController = TextEditingController();
   TextEditingController _ProductSizeController = TextEditingController();
+  TextEditingController _ProductQtyController = TextEditingController();
   TextEditingController _ProductColorController = TextEditingController();
   TextEditingController _SellingPriceController = TextEditingController();
   TextEditingController _DiscountPriceController = TextEditingController();
   TextEditingController _ShortDescpController = TextEditingController();
   TextEditingController _LongDescpController = TextEditingController();
-  
+
   TextEditingController ProductQtyController = TextEditingController();
 
   int? selectedCategoryId;
   int? selectedBrandId;
   int? selectedSubCategoryId;
   String  categoryIdString='';
-  List<File> _multiImages = [];
+
   List<String> multiimg=[];
   File? _singleImage;
   String? statusValue;
@@ -68,11 +114,40 @@ class _CreateProductState extends State<CreateProduct> {
   String singleImageBase64='';
 
 
-  final picker = ImagePicker();
 
+  final picker = ImagePicker();
+  @override
+  // void initState() {
+  //   super.initState();
+  //
+  //    _ProductNameController.text = widget.product_name ?? "Choose Product Name";
+  //   _ProductCodeController.text =  widget.product_code ?? "Choose Product Code";
+  //   _ProductTagsController.text =  widget.product_tags ?? "Choose Tags";
+  //   _ProductQtyController.text =  widget.product_qty?.toString() ?? "no";
+  //   _ProductSizeController.text =  widget.product_size ?? "Choose Product Size";
+  //   _ProductColorController.text =  widget.product_color ?? "Choose color";
+  //   _SellingPriceController.text = widget.selling_price?.toString() ?? " ";
+  //   _DiscountPriceController.text =  widget.discount_price?.toString() ?? " " ;
+  //    _ShortDescpController.text =  widget.short_descp ?? "Choose Short Descp";
+  //    _LongDescpController.text =  widget.long_descp ?? "Choose Long Descp";
+  //
+  // }
+  void initState() {
+    super.initState();
+
+    _ProductNameController.text = widget.product_name != null ? widget.product_name! : "";
+    _ProductCodeController.text = widget.product_code != null ? widget.product_code! : "";
+    _ProductTagsController.text = widget.product_tags != null ? widget.product_tags! : "";
+    _ProductQtyController.text = widget.product_qty != null ? widget.product_qty.toString() : "";
+    _ProductSizeController.text = widget.product_size != null ? widget.product_size! : "";
+    _ProductColorController.text = widget.product_color != null ? widget.product_color! : "";
+    _SellingPriceController.text = widget.selling_price != null ? widget.selling_price.toString() : "";
+    _DiscountPriceController.text = widget.discount_price != null ? widget.discount_price.toString() : "";
+    _ShortDescpController.text = widget.short_descp != null ? widget.short_descp! : "";
+    _LongDescpController.text = widget.long_descp != null ? widget.long_descp! : "";
+  }
 
   // For getSingle Image Function
-
   Future<void> _getSingleImage() async {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
@@ -91,25 +166,12 @@ class _CreateProductState extends State<CreateProduct> {
 
     }
   }
-  // For Multi Image Function
-  Future<void> _getMultiImages() async {
-    final pickedFiles = await ImagePicker().pickMultiImage();
-
-    if (pickedFiles != null) {
-      setState(() {
-        _multiImages =
-            pickedFiles.map((pickedFile) => File(pickedFile.path)).toList();
-      });
-    }
-  }
-
-
   Future<void> _submitForm() async {
 
     print("Your vendor id in product is $vendorId");
     brandId=selectedBrandId.toString();
     categoryId=selectedCategoryId.toString();
-   subcategoryId=selectedSubCategoryId.toString();
+    subcategoryId=selectedSubCategoryId.toString();
     if (_formKey.currentState != null && _formKey.currentState!.validate()) {
 
       try {
@@ -145,80 +207,43 @@ class _CreateProductState extends State<CreateProduct> {
 
         // Add the multi images to the FormData
 
-        for (File image in _multiImages) {
-          // Convert each image file to Base64
-          List<int> imageBytes = await image.readAsBytes();
-          String imageBase64 = 'data:image/png;base64,' + base64Encode(imageBytes);
-          // multiimg.add(imageBase64);
-          // print(multiimg);
 
-          formData.files.add(
-            MapEntry(
-              'multi_img[]',
-              MultipartFile.fromString(imageBase64),
-            ),
-          );
-        }
-        // formData.fields.add(MapEntry(
-        //   'multi_img',
-        //   imageBase64,
-        // ));
 
 
         print('data2');
 
         formData.fields.addAll(
-          [
-          MapEntry('product_name' , _ProductNameController.text),
-          MapEntry('product_code',_ProductCodeController.text),
-          MapEntry('product_tags', _ProductTagsController.text),
-          MapEntry('product_size', _ProductSizeController.text),
-          MapEntry('product_color', _ProductColorController.text),
-          MapEntry('selling_price', _SellingPriceController.text),
-          MapEntry('discount_price', _DiscountPriceController.text),
-          MapEntry( 'short_descp', _ShortDescpController.text),
-          MapEntry('long_descp', _LongDescpController.text),
-          MapEntry('hot_deals', hotDealsStatus.toString()),
-          MapEntry('featured', featuredStatus.toString()),
-          MapEntry('special_offer', specialofferStatus.toString()),
-          MapEntry( 'special_deals', specialDealsStatus.toString()),
-          MapEntry('product_qty', ProductQtyController.text),
-          MapEntry('status', status.toString()),
-          MapEntry('brand_id',brandId),
-          MapEntry( 'category_id',categoryId),
-          MapEntry( 'subcategory_id',subcategoryId),
-          MapEntry('vendor_id', vendorId.toString()),
+            [
 
-          ]
+              MapEntry('product_name' , _ProductNameController.text),
+              MapEntry('product_code',_ProductCodeController.text),
+              MapEntry('product_tags', _ProductTagsController.text),
+              MapEntry('product_size', _ProductSizeController.text),
+              MapEntry('product_color', _ProductColorController.text),
+              MapEntry('selling_price', _SellingPriceController.text),
+              MapEntry('discount_price', _DiscountPriceController.text),
+              MapEntry( 'short_descp', _ShortDescpController.text),
+              MapEntry('long_descp', _LongDescpController.text),
+              MapEntry('hot_deals', hotDealsStatus.toString()),
+              MapEntry('featured', featuredStatus.toString()),
+              MapEntry('special_offer', specialofferStatus.toString()),
+              MapEntry( 'special_deals', specialDealsStatus.toString()),
+              MapEntry('product_qty', ProductQtyController.text),
+              MapEntry('status', status.toString()),
+              MapEntry('brand_id',brandId),
+              MapEntry( 'category_id',categoryId),
+              MapEntry( 'subcategory_id',subcategoryId),
+              MapEntry('vendor_id', vendorId.toString()),
+
+            ]
         );
+        int  id =widget.product_id!;
         // Make the POST request to the API
         Response response = await Dio().post(
           // 'https://ziizii.mickhae.com/api/vendor/product',
-          'http://192.168.2.108:9999/api/vendor/product',
+          'http://192.168.2.108:9999/api/vendor/product/$id',
           data: formData,
-          // data: {
-          //   'product_name': _ProductNameController.text,
-          //   'product_code':_ProductCodeController.text,
-          //   'product_tags': _ProductTagsController.text,
-          //   'product_size': _ProductSizeController.text,
-          //   'product_color': _ProductColorController.text,
-          //   'selling_price': _SellingPriceController.text,
-          //   'discount_price': _DiscountPriceController.text,
-          //   'short_descp': _ShortDescpController.text,
-          //   'long_descp': _LongDescpController.text,
-          //   'hot_deals': hotDealsStatus.toString(),
-          //   'featured': featuredStatus.toString(),
-          //   'special_offer': specialofferStatus.toString(),
-          //   'special_deals': specialDealsStatus.toString(),
-          //   'product_qty': ProductQtyController.text,
-          //   'status': status.toString(),
-          //   'brand_id':brandId,
-          //   'category_id':categoryId,
-          //   'subcategory_id':subcategoryId,
-          //   'vendor_id':vendorId.toString(),
-          //   'product_thambnail':singleImageBase64,
-          //   'multi_img':multiimg,
-          // },
+
           options: options,
         );
         print("data 3");
@@ -257,6 +282,7 @@ class _CreateProductState extends State<CreateProduct> {
       }
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -373,6 +399,25 @@ class _CreateProductState extends State<CreateProduct> {
                 ),
                 SizedBox(height: 16.0),
 
+                Text("Vendor Main Image"),
+               // if( widget.product_thambnail != null)
+               //       Image.network(
+               //    widget.product_thambnail!,
+               //    width: 200,
+               //    height: 200,
+               //    fit: BoxFit.cover,
+               //  )
+               //      else
+               //  ElevatedButton(
+               //    onPressed: _getSingleImage,
+               //    child: Text('Choose Product Single Image'),
+               //  ),
+               //  if (_singleImage != null)
+               //    Image.file(
+               //      _singleImage!,
+               //      height: 200,
+               //    ),
+
                 // for Short Description
                 TextFormField(
                   controller: _ShortDescpController,
@@ -410,76 +455,83 @@ class _CreateProductState extends State<CreateProduct> {
                   },
                 ),
                 SizedBox(height: 16.0),
+                // if (widget.product_thambnail != null)
+                //   Image.network(
+                //     widget.product_thambnail!,
+                //     width: 200,
+                //     height: 200,
+                //     fit: BoxFit.cover,
+                //   ),
+                //
+                // // For Single Image
+                // ElevatedButton(
+                //   onPressed: _getSingleImage,
+                //   child: Text('Choose Product Single Image'),
+                // ),
+                // if (_singleImage != null)
+                //   Image.file(
+                //     _singleImage!,
+                //     height: 200,
+                //   ),
 
-                // For Single Image
-                ElevatedButton(
-                  onPressed: _getSingleImage,
-                  child: Text('Choose Product Single Image'),
-                ),
-                if (_singleImage != null)
-                  Image.file(
-                    _singleImage!,
-                    height: 200,
-                  ),
-                SizedBox(height: 16.0),
 
                 //For Multi Image
                 // Multi Image Picker
-                ElevatedButton(
-                  onPressed: _getMultiImages,
-                  child: Text('Choose Product Multi Images'),
-                ),
-                SizedBox(height: 16.0),
-                if (_multiImages.isNotEmpty)
-                  Container(
-
-                    height:200,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: _multiImages.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Padding(
-                          padding: const EdgeInsets.all(20.0),
-                          child: Stack(
-                            clipBehavior: Clip.none,
-                            children: [
-                              Image.file(
-                                _multiImages[index],
-                                height: 70,
-                                width: 100,
-
-                              ),
-                              Positioned(
-                                top:-15,
-                                right: -15,
-                                child: Container(
-
-                                  width: 40,
-                                  height:40,
-                                  decoration:BoxDecoration(
-                                    color:Colors.white,
-                                    borderRadius: BorderRadius.circular(50),
-                                  ),
-                                  child: Center(
-                                    child: IconButton(
-                                      icon: Icon(Icons.close_sharp,color: Colors.black,size: 25,),
-                                      onPressed: () {
-                                        setState(() {
-                                          _multiImages.removeAt(index);
-                                        });
-                                      },
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-
-
-                      },
-                    ),
-                  ),
+                // ElevatedButton(
+                //   onPressed: _getMultiImages,
+                //   child: Text('Choose Product Multi Images'),
+                // ),
+                // SizedBox(height: 16.0),
+                // if (_multiImages.isNotEmpty)
+                //   Container(
+                //
+                //     height:200,
+                //     child: ListView.builder(
+                //       scrollDirection: Axis.horizontal,
+                //       itemCount: _multiImages.length,
+                //       itemBuilder: (BuildContext context, int index) {
+                //         return Padding(
+                //           padding: const EdgeInsets.all(20.0),
+                //           child: Stack(
+                //             clipBehavior: Clip.none,
+                //             children: [
+                //               Image.file(
+                //                 _multiImages[index],
+                //                 height: 70,
+                //                 width: 100,
+                //
+                //               ),
+                //               Positioned(
+                //                 top:-15,
+                //                 right: -15,
+                //                 child: Container(
+                //
+                //                   width: 40,
+                //                   height:40,
+                //                   decoration:BoxDecoration(
+                //                     color:Colors.white,
+                //                     borderRadius: BorderRadius.circular(50),
+                //                   ),
+                //                   child: Center(
+                //                     child: IconButton(
+                //                       icon: Icon(Icons.close_sharp,color: Colors.black,size: 25,),
+                //                       onPressed: () {
+                //                         setState(() {
+                //                           _multiImages.removeAt(index);
+                //                         });
+                //                       },
+                //                     ),
+                //                   ),
+                //                 ),
+                //               ),
+                //             ],
+                //           ),
+                //         );
+                //
+                //
+                //       },
+                //     ),
+                //   ),
                 SizedBox(height:20),
 
                 // for Selling Price
@@ -601,7 +653,7 @@ class _CreateProductState extends State<CreateProduct> {
                               });
                             },
                             value: selectedBrandId,
-                            hint: Text('Select a Brand'),
+                            hint: Text(widget.brand_name!.isNotEmpty ? widget.brand_name! : "Select a Brand  "),
                           ),
                           if (selectedBrandId != null && apiResponse.data.isNotEmpty)  // Check if the list is not empty
                             Text('Selected Brand: ${apiResponse.data.firstWhere((brand) => brand.id == selectedBrandId).brand_name}'),
@@ -631,7 +683,6 @@ class _CreateProductState extends State<CreateProduct> {
                 ),
 
                 SizedBox(height: 30.0),
-
 
                 // ___________ For Category
                 Text('Category Name:',style: TextStyle(fontSize: 16,color:Colors.black),),
@@ -672,7 +723,7 @@ class _CreateProductState extends State<CreateProduct> {
                               });
                             },
                             value: selectedCategoryId,
-                            hint: Text('Select a category'),
+                            hint: Text(widget.category_name!.isNotEmpty ? widget.category_name! : "Select a Category "),
                           ),
                           selectedCategoryId != null
                               ? Text('Selected category: ${apiResponse.data.firstWhere((category) => category.id == selectedCategoryId).category_name}')
@@ -717,7 +768,7 @@ class _CreateProductState extends State<CreateProduct> {
                             children: [
 
                               Center(child: SizedBox(
-                                width:10,
+                                  width:10,
                                   height:20,
                                   child: CircularProgressIndicator())),
                             ],
@@ -746,7 +797,7 @@ class _CreateProductState extends State<CreateProduct> {
                               });
                             },
                             value: selectedSubCategoryId,
-                            hint: Text('Select a Subcategory'),
+                            hint: Text(widget.subcategory_name!.isNotEmpty ? widget.subcategory_name! : 'Select a Subcategory'),
                           ),
                           selectedSubCategoryId != null
                               ? Text('Selected Subcategory: ${apiResponse.data.firstWhere((subcategory) => subcategory.id == selectedCategoryId).subcategory_name}')
@@ -780,11 +831,11 @@ class _CreateProductState extends State<CreateProduct> {
                 SizedBox(height: 30.0),
 
 
-               // For Status
+                // For Status
                 Text("Choose Product Status :",style: TextStyle(fontSize: 16,color:Colors.black),),
                 DropdownButton<String>(
                   isExpanded:true,
-                  hint: Text('Choose Product Status '),
+                  hint: Text(widget.status == 1 ? "Active"  : 'Inactive'),
                   value: statusValue,
                   onChanged: (String? newValue) {
                     setState(() {
@@ -807,7 +858,7 @@ class _CreateProductState extends State<CreateProduct> {
                 Text("Choose Product Status Hot Deals :",style: TextStyle(fontSize: 16,color:Colors.black),),
                 DropdownButton<String>(
                   isExpanded:true,
-                  hint: Text('Choose HotDeals Status '),
+                  hint: Text(widget.hot_deals == 1 ? "Yes"  : 'No'),
                   value: hotDealsValue,
                   onChanged: (String? newValue) {
                     setState(() {
@@ -830,7 +881,7 @@ class _CreateProductState extends State<CreateProduct> {
                 Text("Choose Product Status Featured :",style: TextStyle(fontSize: 16,color:Colors.black),),
                 DropdownButton<String>(
                   isExpanded:true,
-                  hint: Text('Choose Product Featured Status'),
+                  hint: Text(widget.featured == 1 ? "Yes"  : 'No'),
                   value:featuredValue,
                   onChanged: (String? newValue) {
                     setState(() {
@@ -853,7 +904,7 @@ class _CreateProductState extends State<CreateProduct> {
                 Text("Choose Product Status Special Offers :",style: TextStyle(fontSize: 16,color:Colors.black),),
                 DropdownButton<String>(
                   isExpanded:true,
-                  hint: Text('Choose Product Special Offers : '),
+                  hint: Text( widget.special_offer == 1 ? "Yes"  : 'No'),
                   value: specialofferValue,
                   onChanged: (String? newValue) {
                     setState(() {
@@ -877,11 +928,11 @@ class _CreateProductState extends State<CreateProduct> {
 
                 DropdownButton<String>(
                   isExpanded:true,
-                  hint: Text('Choose Product Special Deals Status '),
+                  hint: Text(widget.special_deals == 1 ? "Yes"  : 'No'),
                   value: specialDealsValue,
                   onChanged: (String? newValue) {
                     setState(() {
-                    specialDealsValue = newValue!;
+                      specialDealsValue = newValue!;
                       specialDealsStatus = (newValue == 'Yes') ? 1 : 0;
                       print("Your status is $status");
                     });

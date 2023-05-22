@@ -4,7 +4,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 
 class ProfileModel {
-  final _baseurl="https://ziizii.mickhae.com/api/vendor";
+  // final _baseurl="https://ziizii.mickhae.com/api/vendor";
+  final _baseurl="http://192.168.2.108:9999/api/vendor";
 
   Future<String?> authenticate(String name,String username,String email,String phone,String address,String vendor_short_info,String vendor_join,String image ) async {
     try {
