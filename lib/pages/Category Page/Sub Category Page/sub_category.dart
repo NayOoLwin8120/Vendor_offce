@@ -84,7 +84,8 @@ class _Sub_CategoryState extends State<Sub_Category> {
                 padding: const EdgeInsets.all(8.0),
                 child: Container(
                   child: Wrap(
-                    alignment: WrapAlignment.spaceAround,
+                    alignment: WrapAlignment.start,
+
                     spacing: 100.0, // spacing between cards
                     runSpacing: 200.0,
                     children: [
@@ -155,10 +156,11 @@ class _Sub_CategoryState extends State<Sub_Category> {
                                           width:double.infinity,
                                           height:40,
                                           // child:Image.network(brand.brand_image.toString())
-                                          child:Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          child:Wrap(
+                                            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            alignment: WrapAlignment.spaceBetween,
                                             children: [
-                                              Text("Sub_category name      :"),
+                                              Text("Sub_category name :"),
                                               Text(subcategory.subcategory_name.toString()),
                                             ],
                                           ),
@@ -171,8 +173,9 @@ class _Sub_CategoryState extends State<Sub_Category> {
                                           width:double.infinity,
                                           height:40,
                                           // child:Image.network(brand.brand_image.toString())
-                                          child:Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          child:Wrap(
+                                            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            alignment: WrapAlignment.spaceBetween,
                                             children: [
                                               Text("Sub_category_slug      :"),
                                               Text(subcategory.subcategory_slug.toString()),

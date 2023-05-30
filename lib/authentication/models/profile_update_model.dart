@@ -2,14 +2,20 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class ProfileModel {
-  // final _baseurl="https://ziizii.mickhae.com/api/vendor";
-  final _baseurl="http://192.168.2.108:9999/api/vendor";
-
+  final _baseurl="https://ziizii.mickhae.com/api/vendor";
+  final storage=FlutterSecureStorage();
+  // final _baseurl="http://192.168.2.105:9999/api/vendor";
+  Future<String?> getVendorId() async {
+    String? vendorId = await storage.read(key:'id');
+    return vendorId;
+  }
   Future<String?> authenticate(String name,String username,String email,String phone,String address,String vendor_short_info,String vendor_join,String image ) async {
     try {
       debugPrint("Api Connected");
+      String? vendorId = await getVendorId();
 
       final response = await Dio().post(
         '$_baseurl/profile/update/2',

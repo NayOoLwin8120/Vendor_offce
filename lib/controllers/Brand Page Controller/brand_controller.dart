@@ -8,8 +8,9 @@ class BrandApiController {
   final ipaddress="https://ziizii.mickhae.com/";
   final ipaddress2='http://192.168.100.23:9999/';
   final ipaddress3='http://192.168.100.23:9999/';
+  final ipaddress4='http://192.168.100.23:8888/';
   // final _baseUrl = 'https://ziizii.mickhae.com/api/vendor';
-  final _baseUrl = 'http://192.168.2.108:9999/api/vendor';
+  final _baseUrl = 'https://ziizii.mickhae.com/api/vendor';
 
 
   final Dio _dio = Dio();
@@ -25,7 +26,7 @@ class BrandApiController {
     }
   }
 
-   List<Data> filterData(String query, List<Data> data) {
+   List<Databrand> filterData(String query, List<Databrand> data) {
      final lowercaseQuery = query.toLowerCase();
 
      return data.where((item) {

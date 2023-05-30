@@ -6,7 +6,7 @@ import 'package:vendor/Model/Product%20Page%20Model/product_page_model.dart';
 
 class ProductApiController {
   // final _baseUrl = 'https://ziizii.mickhae.com/api/vendor';
-  final _baseUrl = 'http://192.168.2.108:9999/api/vendor';
+  final _baseUrl = 'https://ziizii.mickhae.com/api/vendor';
   final _endpoint='products';
   final Dio _dio = Dio();
   final storage=FlutterSecureStorage();
@@ -22,6 +22,7 @@ class ProductApiController {
     final response = await _dio.get('$_baseUrl/$_endpoint/$vendorId');
 
     if (response.statusCode == 200) {
+      print(ProductApiResponse.fromJson(response.data));
 
       return ProductApiResponse.fromJson(response.data);
     } else {
@@ -29,7 +30,7 @@ class ProductApiController {
     }
   }
 
-  List<Data> filterData(String query, List<Data> data) {
+  List<Dataproduct> filterData(String query, List<Dataproduct> data) {
     final lowercaseQuery = query.toLowerCase();
 
     return data.where((item) {

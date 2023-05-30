@@ -6,7 +6,7 @@ import 'package:vendor/Model/Category%20Page%20Model%20/Sub_Category%20Page%20Mo
 
 class SubCategoryApiController {
   // final _baseUrl = 'https://ziizii.mickhae.com/api/vendor';
-  final _baseUrl = 'http://192.168.2.108:9999/api/vendor';
+  final _baseUrl = 'https://ziizii.mickhae.com/api/vendor';
   final _endpoint='subcategory';
   final Dio _dio = Dio();
 
@@ -36,7 +36,7 @@ class SubCategoryApiController {
   }
 
 
-  List<Data> filterData(String query, List<Data> data) {
+  List<Datasubcategory> filterData(String query, List<Datasubcategory> data) {
     final lowercaseQuery = query.toLowerCase();
 
     return data.where((item) {

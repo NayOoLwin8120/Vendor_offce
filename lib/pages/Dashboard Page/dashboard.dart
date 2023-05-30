@@ -102,7 +102,7 @@ class _DashboardState extends State<Dashboard> {
                                           height:100,
                                           decoration: BoxDecoration(
                                             borderRadius: BorderRadius.circular(12),
-                                            color: Color(0xFF3470e0),
+                                            color: Colors.blue,
                                           ),
                                           child:
                                           Column(
@@ -119,8 +119,8 @@ class _DashboardState extends State<Dashboard> {
                                                       Row(
                                                         children: [
                                                           Icon(Icons.monetization_on,size: 18,),
-                                                          Text("${apiResponse.today_Sale.toString()}",style: TextStyle(fontSize: 18,color: Colors.white),),
-                                                          Text("USD",style: TextStyle(fontSize: 18,color:Colors.white),),
+                                                          Text("${apiResponse.today_Sale.toString()}",style: TextStyle(fontSize: 16,color: Colors.white),),
+                                                          Text("USD",style: TextStyle(fontSize: 16,color:Colors.white),),
                                                         ],
                                                       ),
                                                     ),
@@ -133,7 +133,7 @@ class _DashboardState extends State<Dashboard> {
                                                 height:3,
                                                 color: Colors.black,
                                               ),
-                                              Text("Today Sale",style: TextStyle(fontSize: 20,color:Colors.white),)
+                                              Text("Today Sale",style: TextStyle(fontSize: 16,color:Colors.white),)
 
                                             ],
                                           )
@@ -146,7 +146,7 @@ class _DashboardState extends State<Dashboard> {
                                           height:100,
                                           decoration: BoxDecoration(
                                             borderRadius: BorderRadius.circular(12),
-                                            color: Color(0xFFfa8557),
+                                            color: Colors.blue,
                                           ),
                                           child:Column(
                                             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -162,8 +162,8 @@ class _DashboardState extends State<Dashboard> {
                                                       Row(
                                                         children: [
                                                           Icon(Icons.monetization_on,size: 18,),
-                                                          Text("${apiResponse.monthly_Sale.toString()}",style: TextStyle(fontSize: 18,color:Colors.white),),
-                                                          Text("USD",style: TextStyle(fontSize: 18,color:Colors.white),),
+                                                          Text("${apiResponse.monthly_Sale.toString()}",style: TextStyle(fontSize: 16,color:Colors.white),),
+                                                          Text("USD",style: TextStyle(fontSize: 16,color:Colors.white),),
                                                         ],
                                                       ),
                                                     ),
@@ -176,7 +176,7 @@ class _DashboardState extends State<Dashboard> {
                                                 height:3,
                                                 color: Colors.black,
                                               ),
-                                              Text("Monthly Sale",style: TextStyle(fontSize: 20,color:Colors.white),)
+                                              Text("Monthly Sale",style: TextStyle(fontSize: 16,color:Colors.white),)
 
                                             ],
                                           )
@@ -189,7 +189,7 @@ class _DashboardState extends State<Dashboard> {
                                           height:100,
                                           decoration: BoxDecoration(
                                             borderRadius: BorderRadius.circular(12),
-                                            color: Color(0xFF83f7b5),
+                                            color: Colors.blue,
                                           ),
                                           child:Column(
                                             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -204,8 +204,8 @@ class _DashboardState extends State<Dashboard> {
                                                       Row(
                                                         children: [
                                                           Icon(Icons.monetization_on,size: 18,),
-                                                          Text("${apiResponse.yearly_Sale.toString()}",style: TextStyle(fontSize: 18,color:Colors.white),),
-                                                          Text("USD",style: TextStyle(fontSize: 18,color:Colors.white),),
+                                                          Text("${apiResponse.yearly_Sale.toString()}",style: TextStyle(fontSize: 16,color:Colors.white),),
+                                                          Text("USD",style: TextStyle(fontSize: 16,color:Colors.white),),
                                                         ],
                                                       ),
                                                     ),
@@ -218,7 +218,7 @@ class _DashboardState extends State<Dashboard> {
                                                 height:3,
                                                 color: Colors.black,
                                               ),
-                                              Text("Yearly Sale",style: TextStyle(fontSize: 20,color:Colors.white),)
+                                              Text("Yearly Sale",style: TextStyle(fontSize: 16,color:Colors.white),)
 
                                             ],
                                           )
@@ -367,35 +367,37 @@ class OrderDetailsDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        height:400,
-      padding: EdgeInsets.all(16),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            'Order Details',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          ),
-          SizedBox(height: 30),
-          Text('Order ID  :       ${orderData.id}',style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400)),
-          SizedBox(height: 20),
-          Text('            Order Date      :     ${orderData.orderDate}',style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400)),
-          SizedBox(height: 20),
-          Text('            Invoice No.     :     ${orderData.invoiceNo}',style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400)),
-          SizedBox(height: 20),
-          Text('  Amount      :       ${orderData.amount}',style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400)),
-          SizedBox(height: 20),
-          Text('  Payment     :      ${orderData.paymentMethod}',style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400)),
-          SizedBox(height: 20),
-          Text('  Order Status    :      ${orderData.status}',style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400,color:orderData.status== 'pending' ? Colors.red : Colors.green)),
-          SizedBox(height: 20),
-          ElevatedButton(
-            child: const Text('Close Details'),
-            onPressed: () => Navigator.pop(context),
-          ),
-          // Add more order details here
-        ],
+    return SingleChildScrollView(
+      scrollDirection: Axis.vertical,
+      child: Container(
+        padding: EdgeInsets.all(16),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'Order Details',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 30),
+            Text('Order ID  :       ${orderData.id}',style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400)),
+            SizedBox(height: 20),
+            Text('            Order Date      :     ${orderData.orderDate}',style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400)),
+            SizedBox(height: 20),
+            Text('            Invoice No.     :     ${orderData.invoiceNo}',style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400)),
+            SizedBox(height: 20),
+            Text('  Amount      :       ${orderData.amount}',style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400)),
+            SizedBox(height: 20),
+            Text('     Payment     :      ${orderData.paymentMethod}',style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400)),
+            SizedBox(height: 20),
+            Text('  Order Status    :      ${orderData.status}',style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400,color:orderData.status== 'pending' ? Colors.red : Colors.green)),
+            SizedBox(height: 20),
+            ElevatedButton(
+              child: const Text('Close Details'),
+              onPressed: () => Navigator.pop(context),
+            ),
+            // Add more order details here
+          ],
+        ),
       ),
     );
   }

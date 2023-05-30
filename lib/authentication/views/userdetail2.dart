@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:vendor/authentication/controllers/login_controller.dart';
 import 'package:vendor/authentication/views/profile_edit.dart';
 
@@ -14,9 +15,9 @@ class UserDetailScreen extends StatefulWidget {
 }
 
  class _UserDetailScreenState extends State<UserDetailScreen> {
-   late  String imageUrl=widget.userData['data']['photo'];
+     late String imageUrl=widget.userData['data']['photo'];
 
-   late ImageProvider<Object>? imageProvider;
+    ImageProvider<Object>? imageProvider;
 
   @override
   void initState() {
@@ -37,6 +38,7 @@ class UserDetailScreen extends StatefulWidget {
    }
 
 
+
    @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,7 +55,7 @@ class UserDetailScreen extends StatefulWidget {
           ),
           IconButton(
           onPressed: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context)=>ProfileEditPage(userData: widget.userData,)));
+            Navigator.push(context, MaterialPageRoute(builder: (context)=>ProfileEditPage(userData: widget.userData)));
           }, icon: Icon(Icons.edit),
           ),
         ],
@@ -72,8 +74,8 @@ class UserDetailScreen extends StatefulWidget {
                 //   'https://i.pravatar.cc/150?img=1',
                 // ),
 
-                backgroundImage: NetworkImage('https://media.istockphoto.com/vectors/default-image-icon-vector-missing-picture-page-for-website-design-or-vector-id1357365823?b=1&k=20&m=1357365823&s=170667a&w=0&h=y6ufWZhEt3vYWetga7F33Unbfta2oQXCZLUsEa67ydM='),
-                // backgroundImage: imageUrl != null ? Image.network(imageUrl): Image.network('https://media.istockphoto.com/vectors/default-image-icon-vector-missing-picture-page-for-website-design-or-vector-id1357365823?b=1&k=20&m=1357365823&s=170667a&w=0&h=y6ufWZhEt3vYWetga7F33Unbfta2oQXCZLUsEa67ydM='),
+                // backgroundImage: NetworkImage('https://media.istockphoto.com/vectors/default-image-icon-vector-missing-picture-page-for-website-design-or-vector-id1357365823?b=1&k=20&m=1357365823&s=170667a&w=0&h=y6ufWZhEt3vYWetga7F33Unbfta2oQXCZLUsEa67ydM='),
+                backgroundImage: widget.userData['data']['photo'] != null ? NetworkImage(widget.userData['data']['photo']): NetworkImage('https://media.istockphoto.com/vectors/default-image-icon-vector-missing-picture-page-for-website-design-or-vector-id1357365823?b=1&k=20&m=1357365823&s=170667a&w=0&h=y6ufWZhEt3vYWetga7F33Unbfta2oQXCZLUsEa67ydM='),
               ),
             ),
             const SizedBox(height: 20),
@@ -268,6 +270,7 @@ class UserDetailScreen extends StatefulWidget {
                     ),
                      Text(
                       '${widget.userData['data']['status']}',
+                      // '${DateFormat.yMMMEd().format(widget.userData['data']['created_at'])}',
                       style: TextStyle(
                         fontSize: 20,
                         color: Colors.white,
@@ -320,8 +323,8 @@ class UserDetailScreen extends StatefulWidget {
                   color:Colors.blue,
                   borderRadius: BorderRadius.circular(5),
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                child: Wrap(
+                  // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     const Text(
                       'Create_at :',
@@ -331,6 +334,8 @@ class UserDetailScreen extends StatefulWidget {
                       ),
                     ),
                     Text(
+
+
                       '${widget.userData['data']['created_at']}',
                       style: TextStyle(
                         fontSize: 20,

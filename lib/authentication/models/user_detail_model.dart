@@ -7,18 +7,19 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class UserModel {
   final _storage = FlutterSecureStorage();
-  // final _baseurl="https://ziizii.mickhae.com/api/vendor";
-  final _baseurl="http://192.168.2.108:9999/api/vendor";
+  final _baseurl="https://ziizii.mickhae.com/api/vendor";
+  // final _baseurl="http://192.168.2.105:9999/api/vendor";
 
   Future<Map<String, dynamic>?> getUserData() async {
     try {
       final token = await _storage.read(key: 'token');
+      final vendorid=await _storage.read(key: 'id');
       if (token == null) {
         return null; // User is not logged in
       }
 
       final response = await Dio().get(
-        '$_baseurl/detail/2',
+        '$_baseurl/detail/$vendorid',
         options: Options(headers: {'Authorization': 'Bearer $token'}),
       );
 

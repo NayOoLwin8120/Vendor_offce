@@ -5,7 +5,7 @@ import 'package:vendor/Model/Category%20Page%20Model%20/category_page_model.dart
 
 class CategoryApiController {
   // final _baseUrl = 'https://ziizii.mickhae.com/api/vendor';
-  final _baseUrl = 'http://192.168.2.108:9999/api/vendor';
+  final _baseUrl = 'https://ziizii.mickhae.com/api/vendor';
   final ipaddress="https://ziizii.mickhae.com/";
   final ipaddress2='http://192.168.100.23:9999/';
   final _endpoint='category';
@@ -17,7 +17,10 @@ class CategoryApiController {
     final response = await _dio.get('$_baseUrl/$_endpoint');
 
     if (response.statusCode == 200) {
+      print("data pasin");
+      print(response.data.runtimeType);
       return CategoryApiResponse.fromJson(response.data);
+
     } else {
       throw Exception('Failed to load data');
     }

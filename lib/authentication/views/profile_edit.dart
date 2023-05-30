@@ -1,14 +1,21 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
+import 'package:dio/dio.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:vendor/authentication/controllers/profile_update_controller.dart';
+import 'package:vendor/authentication/models/user_detail_model.dart';
 import 'package:vendor/custom_config/util/custom_image_convetor.dart';
+import 'package:vendor/pages/secondpage.dart';
+
 
 class ProfileEditPage extends StatefulWidget {
   final Map<String, dynamic> userData;
+
   const ProfileEditPage({Key? key,required this.userData}) : super(key: key);
 
   @override
@@ -27,47 +34,18 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
   TextEditingController _addressController = TextEditingController();
   TextEditingController _shortinfoController = TextEditingController();
   TextEditingController _vedorjoinController = TextEditingController();
-  bool _isImageSelected=false;
-  File? image;
-  File? imagelocal;
-   String? imageapi;
-  File? _imagefile;
-  File? _singleImage;
-  final ProfileController _controller = ProfileController();
+
+
+
+
+
   final picker = ImagePicker();
   String singleImageBase64='';
-  // Future<void> _pickGalleryImage() async {
-  //   try{
-  //     final pickedimage= await ImagePicker().pickImage(source: ImageSource.gallery);
-  //     if (pickedimage == null) return;
-  //     // print(pickedimage.path);
-  //     File imagefile=File(pickedimage.path);
-  //     // print(imageFile);
-  //     Uint8List imagebytes = await imagefile.readAsBytes();
-  //     String base64string = base64.encode(imagebytes);
-  //
-  //     Uint8List decodedbytes = base64.decode(base64string);
-  //     print(decodedbytes);
-  //     final imageTemporay=File(pickedimage.path );
-  //
-  //
-  //     final imagePermant=await _saveImage(pickedimage.path);
-  //     // final readbytes = await (imagePermant ?? imageTemporay).readAsBytes();
-  //     final readbytes= await imageTemporay.readAsBytes();
-  //     final base64image=await unit8ToBase64(readbytes as Uint8List, "image/jpeg");
-  //
-  //     setState(() {
-  //       _imagefile=File(pickedimage.path);
-  //
-  //       imageapi=base64image;
-  //       this.imagelocal=imageTemporay;
-  //       // this.imagelocal=imagePermant;
-  //     });
-  //   }on PlatformException catch (e){
-  //     print("Failed to picked image: $e");
-  //   }
-  //
-  // }
+  File? _singleImage;
+  bool _isLoading = false;
+  String _errorMessage = '';
+
+
 
   Future<void> _getSingleImage() async {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
@@ -81,105 +59,146 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
     if (_singleImage != null) {
       // Convert single image file to Base64
       List<int> singleImageBytes = await _singleImage!.readAsBytes();
-      String singleImageBase = 'data:image/png;base64' + base64Encode(singleImageBytes);
+      String singleImageBase = 'data:image/png;base64,' + base64Encode(singleImageBytes);
       singleImageBase64=singleImageBase;
       print(singleImageBase64);
 
     }
   }
-  // Future<File?> _saveImage(String imagepath) async {
-  //   if (image != null) {
-  //     final directory = await getApplicationDocumentsDirectory() ;
+
+  // void _onUpdateDataPressed(BuildContext context){
+  //   final name = _nameController.text.trim();
+  //   final username = _usernameController.text.trim();
+  //   final phonenumber = _phoneController.text.trim();
+  //   final email = _emailController.text.trim();
+  //   print(email);
+  //   final shortinfo = _shortinfoController.text.trim();
+  //   final address = _addressController.text.trim();
+  //   final vendor_join = _vedorjoinController.text.trim();
+  //   final image=singleImageBase64;
+  //   if (_formKey.currentState != null && _formKey.currentState!.validate()) {
+  //     try {
+  //       setState(() {
+  //         _isLoading = true;
+  //         _errorMessage = '';
+  //       });
   //
-  //     final fileName = DateTime.now().toIso8601String();
-  //     final filepath = File('${directory.path}/$fileName.png');
   //
-  //     await filepath.writeAsBytes(await image!.readAsBytes());
-  //     // print('${directory.path}/$fileName.png');
-  //     return File(imagepath).copy('${directory.path}/$fileName.png');
+  //
+  //       print(singleImageBase64);
+  //
+  //
+  //     _controller
+  //           .authenticate(
+  //           context,
+  //           name,
+  //           username,
+  //           email,
+  //           phonenumber,
+  //           address,
+  //           shortinfo,
+  //           vendor_join,
+  //           image)
+  //           .then((value) {});
+  //     }catch(error){
+  //       print(error);
+  //     }
   //   }
-  //   return null;
   // }
-  Future<void> _pickCameraImage() async {
-    try{
-      final image = await ImagePicker().pickImage(source: ImageSource.camera);
-      if (image == null) return;
-      final imageTemporay=File(image.path );
-      setState(() {
-        this.image=imageTemporay;
-      });
-    }on PlatformException catch (e){
-      print("Failed to picked image: $e");
-    }
+  Future<void> _submitForm() async {
+    print(widget.userData['data']['id']);
 
-    // setState(() {
-    //   _image = File(pickedFile.path);
-    // });
 
-  }
-  Future<void> _selectImage() async {
-    final pickedFile = await showDialog<File>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Choose an option'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                GestureDetector(
-                  child: const Text('Gallery'),
-                  onTap: () async {
-                    _getSingleImage();
 
-                    Navigator.of(context).pop();
-                  },
-                ),
-                const SizedBox(height: 20),
-                GestureDetector(
-                  child: const Text('Camera'),
-                  onTap: () async {
-                    _pickCameraImage();
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            ),
-          ),
+    if (_formKey.currentState != null && _formKey.currentState!.validate()) {
+      try {
+        print("data");
+        setState(() {
+          _isLoading = true;
+          _errorMessage = '';
+        });
+        print(_nameController.text.runtimeType);
+        print(_shortinfoController.text);
+        print(_emailController.text);
+        print(_phoneController.text);
+        print(_addressController.text);
+        print(_vedorjoinController.text);
+        print(singleImageBase64);
+        Options options = Options(
+          // followRedirects: true,
+          headers: {
+            'Content-Type': 'application/json',
+            // 'Content-Type': 'applicatio/json',
+
+          },
         );
-      },
-    );
+
+        // Make the POST request to the API
+        Response response = await Dio().post(
+
+          'https://ziizii.mickhae.com/api/vendor/profile/update/${widget.userData['data']['id']}',
+
+          data: {
+            'name':_nameController.text,
+            'email': _emailController.text,
+            'phone': _phoneController.text,
+            'address':_addressController.text,
+            'vendor_join': _vedorjoinController.text,
+            'vendor_short_info': _shortinfoController.text,
+            'photo':singleImageBase64,
+
+          },
+          options: options,
+        );
+        print("data 3");
+
+        // Check the response status
+        if (response.statusCode == 200) {
+          print("ok");
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Profile updated successfully!'),
+              duration: Duration(seconds: 2),
+            ),
+          );
 
 
-  }
-  void _onUpdateDataPressed(BuildContext context) {
-    if (_formKey.currentState?.validate() == true) {
 
-      final name = _nameController.text.trim();
-      final username = _usernameController.text.trim();
-      final phonenumber = _phoneController.text.trim();
-      final email = _emailController.text.trim();
-      print(email);
-      final shortinfo=_shortinfoController.text.trim();
-      final address=_addressController.text.trim();
-      final vendor_join=_vedorjoinController.text.trim();
-      // final image=_imagefile;
-      final image=imageapi;
-      _controller
-          .authenticate(
-          context,
-          name,
-          username,
-          email,
-          phonenumber,
-          address,
-          shortinfo,
-          vendor_join,
-         singleImageBase64)
-          .then((value) {});
-      // _controller.authenticate(context,name,username,email,phonenumber,address,shortinfo,vendor_join,image as File)
-      //     .then((value) {
-      //
-      // });
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>Second()));
+
+
+
+
+
+
+          // Handle the success scenario here
+        } else {
+          // Handle the failure scenario here
+          setState(() {
+            _errorMessage = 'Failed to send data to the API';
+            print(_errorMessage);
+          });
+        }
+      } catch (error) {
+        if (error is DioError) {
+          print('DioError: ${error.message}');
+          if (error.response != null) {
+            print('Response status: ${error.response!.statusCode}');
+            print('Response data: ${error.response!.data}');
+          }
+        } else {
+          print('An error occurred: $error');
+        }
+        // Handle any errors that occurred during the API request
+        setState(() {
+          _errorMessage = 'An error occurred: $error';
+          print(_errorMessage);
+        });
+      } finally {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 
@@ -228,18 +247,30 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
       Center(
       child: GestureDetector(
       onTap: () {
-             _selectImage();
+             _getSingleImage();
         },
       child: CircleAvatar(
       radius: 50,
       // backgroundImage:
       // imagelocal!=null ? Image.file(imagelocal!,width:160,height:160,fit:BoxFit.cover).image :
       // NetworkImage('${widget.userData['data']['photo']}') as ImageProvider<Object> ,
-        backgroundImage: _isImageSelected
+      //   backgroundImage: widget.userData['data']['photo'] != null
+      //   ? NetworkImage(widget.userData['data']['photo'].toString()) as ImageProvider<Object>?
+      //       : NetworkImage(url),
 
-            ? FileImage(File(_imagefile!.path))
-            : NetworkImage('${widget.userData['data']['photo']}') as ImageProvider<Object>,
-      child: Icon(
+        backgroundImage: (_singleImage != null)
+            ? Image.file(
+          _singleImage!,
+          height: 200,
+        ).image
+            : (widget.userData['data']['photo'] != null)
+            ? NetworkImage(
+          widget.userData['data']['photo'].toString(),
+        )
+            : null,
+
+
+        child: Icon(
       Icons.camera_alt,
       size: 30,
       color: Colors.white.withOpacity(0.7),
@@ -418,18 +449,14 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
         ),
       const SizedBox(height: 30),
       Center(
-      child: ElevatedButton(
-      onPressed: () {
-        setState(() {
-          print("Hello");
-        });
+        child :ElevatedButton(
+          onPressed: _isLoading ? null : _submitForm,
+          child: _isLoading
+              ? CircularProgressIndicator()
+              : Text('Update Data'),
+        ),
 
-      if (_formKey.currentState!.validate()) {
-        _onUpdateDataPressed(context);
-      }
-      },
-      child: const Text('Save Changes'),
-      ),
+
       ),
 
         ],

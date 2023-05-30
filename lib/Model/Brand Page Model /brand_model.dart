@@ -2,12 +2,12 @@
 
 
 class BrandApiResponse {
-  List<Data> data;
+  List<Databrand> data;
   BrandApiResponse({required this.data,});
 
   factory BrandApiResponse.fromJson(Map<String, dynamic> json) {
-    final dataList = json['data'] as List<dynamic>;
-    final data = dataList.map((item) => Data.fromJson(item)).toList();
+    final dataList = json['data']['data'] as List<dynamic>;
+    final data = dataList.map((item) => Databrand.fromJson(item)).toList();
     print(data);
 
     return BrandApiResponse(
@@ -16,7 +16,7 @@ class BrandApiResponse {
   }
 }
 
-class Data {
+class Databrand {
   int? id;
   String? brand_name;
   String? brand_slug;
@@ -25,7 +25,7 @@ class Data {
   String? created_at;
   String? updated_at;
 
-  Data({
+  Databrand({
     this.id,
     this.brand_name,
     this.brand_slug,
@@ -35,8 +35,8 @@ class Data {
     this.updated_at,
   });
 
-  factory Data.fromJson(Map<String, dynamic> json) {
-    return Data(
+  factory Databrand.fromJson(Map<String, dynamic> json) {
+    return Databrand(
       id: json['id'],
       brand_name: json['brand_name'],
       brand_slug: json['brand_slug'],

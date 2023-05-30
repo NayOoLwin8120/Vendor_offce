@@ -1,13 +1,15 @@
 
+import 'package:vendor/Model/Category%20Page%20Model%20/category_page_model.dart';
+
 class SubCategoryApiResponse {
   String message;
   int total;
-  List<Data> data;
+  List<Datasubcategory> data;
   SubCategoryApiResponse({required this.total,required this.message,required this.data,});
 
   factory SubCategoryApiResponse.fromJson(Map<String, dynamic> json) {
     final dataList = json['data'] as List<dynamic>;
-    final data = dataList.map((item) => Data.fromJson(item)).toList();
+    final data = dataList.map((item) => Datasubcategory.fromJson(item)).toList();
     print(data);
 
     return SubCategoryApiResponse(
@@ -18,14 +20,14 @@ class SubCategoryApiResponse {
   }
 }
 
-class Data {
+class Datasubcategory {
   int? id;
   String? category;
   String? subcategory_name;
   String? subcategory_slug;
 
 
-  Data({
+  Datasubcategory({
     this.id,
     this.category,
     this.subcategory_name,
@@ -33,8 +35,8 @@ class Data {
 
   });
 
-  factory Data.fromJson(Map<String, dynamic> json) {
-    return Data(
+  factory Datasubcategory.fromJson(Map<String, dynamic> json) {
+    return Datasubcategory(
       id: json['id'],
       category: json['category'],
      subcategory_name: json['subcategory_name'],

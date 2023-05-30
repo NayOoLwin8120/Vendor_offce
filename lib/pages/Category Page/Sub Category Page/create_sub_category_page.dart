@@ -18,6 +18,27 @@ class _SubcategoryFormState extends State<SubcategoryForm> {
   int? selectedCategoryId;
    String  categoryIdString='';
 
+   // Start For Cartgory dropdown Testing
+  List<Data> categoryList = [];
+  //End For Cartgory dropdown Testing
+
+  // Start For Cartgory dropdown Testing
+  @override
+  void initState() {
+    super.initState();
+
+    // Example code for fetching category data
+    _categoryApiController.getData().then((response) {
+      setState(() {
+        categoryList = response.data;
+      });
+    });
+
+
+  }
+
+
+
 
   Future<void> _submitForm() async {
     print(selectedCategoryId);
@@ -35,6 +56,7 @@ class _SubcategoryFormState extends State<SubcategoryForm> {
         print(_SubCategoryNameController.text);
         if(categoryIdString != null){
           final response = await Dio().post(
+            // 'https://ziizii.mickhae.com/api/vendor/subcategory',
             'https://ziizii.mickhae.com/api/vendor/subcategory',
             data: {
               'category_id':categoryIdString ,
@@ -68,12 +90,13 @@ class _SubcategoryFormState extends State<SubcategoryForm> {
       }
     }
   }
-
-  @override
-  void initState() {
-    super.initState();
-    // _loadData();
-  }
+ // Start For Original Code
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   // _loadData();
+  // }
+  // End For Original Code
 
   // Future<void> _loadData() async {
   //   final categoryApiResponse = await _categoryApiController.getData();
@@ -124,74 +147,104 @@ class _SubcategoryFormState extends State<SubcategoryForm> {
                         return null;
                       },
                     ),
-                    FutureBuilder<CategoryApiResponse>(
-                      future: _categoryApiController.getData(),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          if (snapshot.connectionState == ConnectionState.waiting) {
-                            return Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Center(child: Text("Data are Loading")),
-                                  Center(child: CircularProgressIndicator()),
-                                ],
-                              ),
-                            );
-                          }
-                          if (snapshot.hasError) {
-                            return Center(child: Text('Error fetching data'));
-                          }
-                          final apiResponse = snapshot.data!;
 
-                          return Column(
-                                children: [
-                                  DropdownButton<int>(
-                                    isExpanded:true,
-                                    items: apiResponse.data.map((category) {
-                                      return DropdownMenuItem<int>(
-                                        child: Text(category.category_name.toString()),
-                                        value: category.id,
-                                      );
-                                    }).toList(),
-                                    onChanged: (int? selectedId) {
-                                      setState(() {
-                                        selectedCategoryId = selectedId;
-                                        print(selectedId);
-                                      });
-                                    },
-                                      value: selectedCategoryId,
-                                      hint: Text('Select a category'),
-                                    ),
-                                  selectedCategoryId != null
-                                      ? Text('Selected category: ${apiResponse.data.firstWhere((category) => category.id == selectedCategoryId).category_name}')
-                                      : SizedBox.shrink(),
+                    // Start For Category Dropdown Code
+                    // FutureBuilder<CategoryApiResponse>(
+                    //   future: _categoryApiController.getData(),
+                    //   builder: (context, snapshot) {
+                    //     if (snapshot.hasData) {
+                    //       if (snapshot.connectionState == ConnectionState.waiting) {
+                    //         return Center(
+                    //           child: Column(
+                    //             mainAxisAlignment: MainAxisAlignment.center,
+                    //             children: [
+                    //               Center(child: Text("Data are Loading")),
+                    //               Center(child: CircularProgressIndicator()),
+                    //             ],
+                    //           ),
+                    //         );
+                    //       }
+                    //       if (snapshot.hasError) {
+                    //         return Center(child: Text('Error fetching data'));
+                    //       }
+                    //       final apiResponse = snapshot.data!;
+                    //
+                    //       return Column(
+                    //             children: [
+                    //               DropdownButton<int>(
+                    //                 isExpanded:true,
+                    //                 items: apiResponse.data.map((category) {
+                    //                   return DropdownMenuItem<int>(
+                    //                     child: Text(category.category_name.toString()),
+                    //                     value: category.id,
+                    //                   );
+                    //                 }).toList(),
+                    //                 onChanged: (int? selectedId) {
+                    //                   setState(() {
+                    //                     selectedCategoryId = selectedId;
+                    //                     print(selectedId);
+                    //                   });
+                    //                 },
+                    //                   value: selectedCategoryId,
+                    //                   hint: Text('Select a category'),
+                    //                 ),
+                    //               selectedCategoryId != null
+                    //                   ? Text('Selected category: ${apiResponse.data.firstWhere((category) => category.id == selectedCategoryId).category_name}')
+                    //                   : SizedBox.shrink(),
+                    //
+                    //             ],
+                    //           );
+                    //     } else if (snapshot.hasError) {
+                    //       print(snapshot.error);
+                    //       return Center(
+                    //         child: Column(
+                    //           children: [
+                    //             Lottie.network(
+                    //               "https://assets3.lottiefiles.com/packages/lf20_JUr2Xt.json",
+                    //               width: double.infinity,
+                    //               fit: BoxFit.fill,
+                    //             ),
+                    //             Text(
+                    //               'No Internet Connection',
+                    //               style: TextStyle(fontSize: 22, color: Colors.red),
+                    //             ),
+                    //           ],
+                    //         ),
+                    //       );
+                    //     }
+                    //     return const Center(
+                    //       child: CircularProgressIndicator(),
+                    //     );
+                    //   },
+                    // ),
+                    // End For Category Dropdown Code
 
-                                ],
-                              );
-                        } else if (snapshot.hasError) {
-                          print(snapshot.error);
-                          return Center(
-                            child: Column(
-                              children: [
-                                Lottie.network(
-                                  "https://assets3.lottiefiles.com/packages/lf20_JUr2Xt.json",
-                                  width: double.infinity,
-                                  fit: BoxFit.fill,
-                                ),
-                                Text(
-                                  'No Internet Connection',
-                                  style: TextStyle(fontSize: 22, color: Colors.red),
-                                ),
-                              ],
-                            ),
-                          );
-                        }
-                        return const Center(
-                          child: CircularProgressIndicator(),
+                    // Start For Category Dropdown Testing Code
+                    // For Category
+                    Text("Category Name:", style: TextStyle(fontSize: 20)),
+                    DropdownButton<int>(
+                      isExpanded: true,
+                      items: categoryList.map((category) {
+                        return DropdownMenuItem<int>(
+                          child: Text(category.category_name.toString()),
+                          value: category.id,
                         );
+                      }).toList(),
+                      onChanged: (int? selectedId) {
+                        setState(() {
+                          selectedCategoryId = selectedId;
+                          print(selectedId);
+                        });
                       },
+                      value: selectedCategoryId,
+                      hint: Text("Choose Category Name"),
                     ),
+                    selectedCategoryId != null
+                        ? Text('Selected category: ${categoryList.firstWhere((category) => category.id == selectedCategoryId).category_name}')
+                        : SizedBox.shrink(),
+                    SizedBox(height: 32),
+
+                    // End For Category Dropdown Testing Code
                     SizedBox(height: 16.0),
                     ElevatedButton(
                       onPressed: _isLoading ? null : _submitForm,

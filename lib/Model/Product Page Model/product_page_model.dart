@@ -2,12 +2,12 @@
 class ProductApiResponse {
   String message;
   int total;
-  List<Data> data;
+  List<Dataproduct> data;
   ProductApiResponse({required this.total,required this.message,required this.data,});
 
   factory ProductApiResponse.fromJson(Map<String, dynamic> json) {
     final dataList = json['data'] as List<dynamic>;
-    final data = dataList.map((item) => Data.fromJson(item)).toList();
+    final data = dataList.map((item) => Dataproduct.fromJson(item)).toList();
     print(data);
 
     return ProductApiResponse(
@@ -18,15 +18,15 @@ class ProductApiResponse {
   }
 }
 
-class Data {
+class Dataproduct {
   int? id;
   String? name;
   String? product_slug;
   String? product_code;
   int? product_qty;
-  String? product_tags;
-  String? product_size;
-  String? product_color;
+  List<String?>? product_tags;
+  List<String?>? product_size;
+ List<String?>? product_color;
   int? selling_price;
   int? discount_price;
   String? short_descp;
@@ -38,12 +38,14 @@ class Data {
   int? special_deals;
   int? status;
   String? vendor;
+  int? vendor_id;
   String? brand;
   String? category;
   String? subcategory;
+  List<String?>? multi_images;
 
 
-  Data({
+  Dataproduct({
     this.id,
     this.name,
     this.product_slug,
@@ -65,19 +67,20 @@ class Data {
     this.vendor,
     this.brand,
     this.category,
-    this.subcategory
+    this.subcategory,
+    this.multi_images,
   });
 
-  factory Data.fromJson(Map<String, dynamic> json) {
-    return Data(
+  factory Dataproduct.fromJson(Map<String, dynamic> json) {
+    return Dataproduct(
       id: json['id'],
       name: json['name'],
       product_slug: json['product_slug'],
       product_code: json['product_code'],
       product_qty: json['product_qty'],
-      product_tags: json['product_tags'],
-      product_size: json['product_size'],
-      product_color: json['product_color'],
+      product_tags: (json['product_tags'] as List<dynamic>).cast<String?>(),
+      product_size: (json['product_size']as List<dynamic>).cast<String>(),
+      product_color:  (json['product_color']as List<dynamic>).cast<String>(),
       selling_price: json['selling_price'],
       discount_price: json['discount_price'],
       short_descp: json['short_descp'],
@@ -91,6 +94,9 @@ class Data {
       vendor: json['vendor'],
       category: json['category'],
       subcategory: json['subcategory'],
+      brand: json['brand'],
+        multi_images:(json['multi_images']as List<dynamic>).cast<String>(),
+
 
 
     );

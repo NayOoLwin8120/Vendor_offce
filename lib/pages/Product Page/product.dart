@@ -3,6 +3,7 @@ import 'package:lottie/lottie.dart';
 import 'package:vendor/Model/Product%20Page%20Model/product_page_model.dart';
 import 'package:vendor/controllers/Product%20Page%20Controller/product_page%20_controller.dart';
 import 'package:vendor/pages/Product%20Page/create_product_page.dart';
+import 'package:vendor/pages/Product%20Page/edit_product.dart';
 import 'package:vendor/pages/Product%20Page/edit_product_page.dart';
 import 'package:vendor/pages/Product%20Page/image.dart';
 
@@ -15,6 +16,7 @@ class Product extends StatefulWidget {
 
 class _ProductState extends State<Product> {
   final ProductApiController _product=ProductApiController();
+
 
   void _confirmDelete(BuildContext context, int id) {
     showDialog(
@@ -109,6 +111,7 @@ class _ProductState extends State<Product> {
                             return Center(child: Text('Error fetching data'));
                           }
                           final apiResponse = snapshot.data!;
+
                           print(apiResponse.data.first.product_thambnail);
                           return GridView.builder(
                             shrinkWrap: true,
@@ -117,10 +120,13 @@ class _ProductState extends State<Product> {
                               crossAxisCount: 1,
                               childAspectRatio:1.0,
                             ),
-                            itemCount: apiResponse.data.length,
+                             itemCount: apiResponse.data.length,
+                            // itemCount: reversedData.length,
 
                             itemBuilder: (context, index) {
-                              final product= apiResponse.data[index];
+                              // final product= apiResponse.data[index];
+                              final product= apiResponse.data[apiResponse.data.length - 1 - index];
+                              // final product= reversedData[index];
 
                               return Card(
                                 color: Colors.blue.withOpacity(0.6),
@@ -218,29 +224,61 @@ class _ProductState extends State<Product> {
                                                 onPressed:(){
                                                   Navigator.push(
                                                     context,
-                                                    MaterialPageRoute(builder: (context) => EditProductPage(
-                                                        product_id:product.id!,
-                                                        brand_name:product.brand!,
-                                                        category_name:product.category!,
-                                                        subcategory_name: product.subcategory!,
-                                                        product_name:product.name!,
-                                                        product_code:product.product_code!,
-                                                        discount_price: product.discount_price!,
-                                                        product_qty:product.product_qty!,
-                                                        selling_price: product.selling_price!,
-                                                        product_color:product.product_color!,
-                                                        long_descp: product.long_descp!,
-                                                        short_descp: product.short_descp!,
-                                                        special_deals: product.special_deals!,
-                                                        special_offer: product.special_offer!,
-                                                        hot_deals:product.hot_deals!,
-                                                        product_size: product.product_size!,
-                                                        status: product.status!,
-                                                        featured:product.featured!,
-                                                        product_tags: product.product_tags!,
+                                                    MaterialPageRoute(builder: (context) =>
+                                                        // EditProductPage(
+                                                        // product_id:product.id!,
+                                                        // brand_name:product.brand!,
+                                                        // category_name:product.category!,
+                                                        // subcategory_name: product.subcategory!,
+                                                        // product_name:product.name!,
+                                                        // product_code:product.product_code!,
+                                                        // discount_price: product.discount_price!,
+                                                        // product_qty:product.product_qty!,
+                                                        // selling_price: product.selling_price!,
+                                                        // product_color:product.product_color!,
+                                                        // long_descp: product.long_descp!,
+                                                        // short_descp: product.short_descp!,
+                                                        // special_deals: product.special_deals!,
+                                                        // special_offer: product.special_offer!,
+                                                        // hot_deals:product.hot_deals!,
+                                                        // product_size: product.product_size!,
+                                                        // status: product.status!,
+                                                        // featured:product.featured!,
+                                                        // product_tags: product.product_tags!,
                                                       // product_thambnail: product.product_thambnail!,
-                                                    )),
+                                                    // )
+                                                      Editpage(
+                                                          id: product.id!,
+                                                          categoryname: product.category!,
+                                                          productname: product.name!,
+                                                          subcategoryname: product.subcategory!,
+                                                          brandname: product.brand,
+                                                          productTags: product.product_tags,
+                                                           product_code:product.product_code ,
+                                                          product_qty: product.product_qty,
+                                                          product_color: product.product_color,
+                                                         product_size: product.product_size,
+                                                        discount_price: product.discount_price,
+                                                        selling_price: product.selling_price,
+                                                        long_descp: product.long_descp,
+                                                        short_descp: product.short_descp,
+                                                        vendor_id:product.vendor_id ,
+                                                        product_thambial: product.product_thambnail,
+                                                        multiimageList: product.multi_images,
+                                                      ),
+
+                                                  ),
+
                                                   );
+                                                  print(product.id!);
+                                                  print(product.category!);
+                                                  print(product.name!);
+                                                  print(product.brand);
+                                                  print(product.product_tags);
+                                                  print(product.product_size);
+                                                  print(product.product_color);
+                                                  print(product.selling_price);
+                                                  print(product.discount_price);
                                                   print("Edit Page");
                                                 } ,
                                                 child: const Text('Edit',style: TextStyle(fontSize: 16,color: Colors.white),),

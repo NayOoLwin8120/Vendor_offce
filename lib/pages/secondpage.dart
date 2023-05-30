@@ -6,6 +6,7 @@ import 'package:lottie/lottie.dart';
 import 'package:vendor/Model/Dashboard%20Page%20Model/dashboard_model.dart';
 import 'package:vendor/authentication/controllers/login_controller.dart';
 import 'package:vendor/authentication/models/user_detail_model.dart';
+import 'package:vendor/authentication/views/forgetpassword.dart';
 import 'package:vendor/authentication/views/notifications.dart';
 import 'package:vendor/controllers/Dashboard%20Page%20Controller/dashboard_controller.dart';
 import 'package:vendor/pages/Brand%20Page/brand.dart';
@@ -147,7 +148,9 @@ class _SecondState extends State<Second> {
               final userData = snapshot.data!;
               //fix this error for image
               if(userData == null && userData['photo'] == null){
-                final imageBytes = base64Decode(userData['data']['photo']);                return ListView(
+                final imageBytes = base64Decode(userData['data']['photo']);
+                print(imageBytes);
+                return ListView(
                   padding: EdgeInsets.zero,
                   children: [
                     UserAccountsDrawerHeader(
@@ -210,7 +213,13 @@ class _SecondState extends State<Second> {
                             ),
                           ),
                           currentAccountPicture: CircleAvatar(
-                            backgroundImage: NetworkImage('https://media.istockphoto.com/vectors/default-image-icon-vector-missing-picture-page-for-website-design-or-vector-id1357365823?b=1&k=20&m=1357365823&s=170667a&w=0&h=y6ufWZhEt3vYWetga7F33Unbfta2oQXCZLUsEa67ydM='),
+                            // backgroundImage: NetworkImage('https://media.istockphoto.com/vectors/default-image-icon-vector-missing-picture-page-for-website-design-or-vector-id1357365823?b=1&k=20&m=1357365823&s=170667a&w=0&h=y6ufWZhEt3vYWetga7F33Unbfta2oQXCZLUsEa67ydM='),
+                            backgroundImage:
+                                 (userData['data']['photo'] != null)
+                                ? NetworkImage(
+                              userData['data']['photo'].toString(),
+                            )
+                                : NetworkImage('https://media.istockphoto.com/vectors/default-image-icon-vector-missing-picture-page-for-website-design-or-vector-id1357365823?b=1&k=20&m=1357365823&s=170667a&w=0&h=y6ufWZhEt3vYWetga7F33Unbfta2oQXCZLUsEa67ydM='),
 
                           ),
                         ),
@@ -243,6 +252,20 @@ class _SecondState extends State<Second> {
                                   );
                                 },
                                 // builder:(context)=>UserDetailScreen(),
+                              ),
+                            );
+                          },
+                        ),
+                        ListTile(
+                          leading: const Icon(Icons.password),
+                          title:Text('Forgot Password'),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+
+
+                                builder:(context)=>ForgetPassword(id:userData['data']['id']),
                               ),
                             );
                           },
